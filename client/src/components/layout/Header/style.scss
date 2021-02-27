@@ -1,0 +1,23 @@
+@import '../../../styles/abstracts/variables';
+
+.header {
+	position: absolute;
+	z-index: 10;
+	top: 3.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	font-family: 'Cormorant Garamond', serif;
+
+	&-primary {
+		font-size: 7rem;
+		color: $dark-color;
+	}
+
+	&-secondary {
+		font-size: 3rem;
+		text-align: end;
+		color: $primary-color;
+		margin-right: -3rem;
+		margin-top: -1rem;
+	}
+}

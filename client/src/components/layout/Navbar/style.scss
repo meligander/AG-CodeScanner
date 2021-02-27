@@ -1,0 +1,94 @@
+@import '../../../styles/abstracts/variables';
+
+.navbar {
+	position: fixed;
+	opacity: 0.85;
+	top: 5.5rem;
+	left: 5rem;
+	z-index: 1;
+
+	* {
+		cursor: pointer;
+		border-radius: 100%;
+	}
+
+	&-logo {
+		position: relative;
+		background-color: $primary-color;
+		padding: 1rem 1rem 0.8rem;
+		transition: all 0.2s ease-out;
+		z-index: 1;
+
+		&-img {
+			visibility: visible;
+			height: 2.8rem;
+			width: 2.8rem;
+			-webkit-filter: invert(100%); /* Safari/Chrome */
+			filter: invert(100%);
+			transition: all 0.3s ease-out;
+		}
+
+		&-line {
+			position: absolute;
+			left: 1.3rem;
+			opacity: 0;
+			background-color: $light-color;
+			width: 2.1rem;
+			height: 0.1rem;
+			top: 1.7rem;
+			transition: all 0.25s ease-out;
+		}
+
+		&:hover {
+			transform: scale(1.06);
+			background-color: lighten($primary-color, 5%);
+		}
+
+		&.close {
+			.navbar-logo-img {
+				transform: rotate(100deg);
+				visibility: hidden;
+				transition: all 0.3s ease-out;
+			}
+
+			.navbar-logo-line {
+				opacity: 1;
+				transition: all 0.18s ease-out 0.2s;
+
+				&:nth-child(1) {
+					transform: rotate(45deg) translate(5px, 5px);
+				}
+
+				&:nth-child(3) {
+					transform: rotate(135deg) translate(5px, -5px);
+				}
+			}
+		}
+	}
+
+	&-item {
+		padding: 0.7rem;
+		position: absolute;
+		background-color: $secondary-color;
+		top: 0.2rem;
+		transition: all 0.3s ease-out;
+		visibility: hidden;
+		display: flex;
+		z-index: 0;
+
+		&-icon {
+			font-size: 2.7rem;
+			color: $light-color;
+		}
+
+		&.close {
+			visibility: visible;
+			transform: translateX(8rem);
+		}
+
+		&:hover {
+			transform: translateX(8rem) scale(1.05);
+			background-color: lighten($secondary-color, 5%);
+		}
+	}
+}
