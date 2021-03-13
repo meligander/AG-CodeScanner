@@ -1,0 +1,14 @@
+@import '../../../styles/abstracts/variables';
+
+.notfound {
+	margin: 8rem 4rem;
+	font-size: 4rem;
+	color: $dark-color;
+
+	&-icon {
+		font-size: 6rem;
+		margin-bottom: -1.6rem;
+		margin-right: 2rem;
+		color: $danger-color;
+	}
+}

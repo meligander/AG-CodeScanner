@@ -1,18 +1,25 @@
-const mysql = require('mysql');
+const express = require('express');
+const path = require('path');
 
-var connection = mysql.createConnection({
-	host: 'c1340282.ferozo.com',
-	database: 'c1340282_merlo',
-	user: 'c1340282_merlo',
-	password: 'eporass7Ktbvaio',
-});
+require('dotenv').config({ path: path.resolve(__dirname, './config/.env') });
 
-connection.connect(function (err) {
-	if (err) {
-		console.error('Error connecting: ' + err.message);
-	} else {
-		console.log('Connected as id ' + connection.threadId);
-	}
-});
+const app = express();
 
-connection.end();
+//Middleware
+app.use(express.json({ limit: '50mb', extended: false }));
+app.use(express.urlencoded({ limit: '50mb', extended: false }));
+
+app.use('/api/product', require('./routes/api/product'));
+app.use('/api/auth', require('./routes/api/auth'));
+
+const PORT = process.env.PORT || 5000;
+
+/* if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('client/build'));
+
+	app.get('*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+	});
+}
+ */
+app.listen(PORT, () => console.log(`Server started on PORT: ${PORT}`));

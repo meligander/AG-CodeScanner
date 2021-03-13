@@ -1,0 +1,62 @@
+.btn {
+	&,
+	&:link,
+	&:visited {
+		font-size: 1.8rem;
+		cursor: pointer;
+		backface-visibility: hidden;
+		border: none;
+		padding: 1rem 1.5rem;
+		border-radius: 1.8rem;
+		margin-top: 1.5rem;
+		transition: all 0.2s ease-out;
+	}
+
+	&:active,
+	&:focus {
+		outline: none;
+	}
+
+	&-icon {
+		margin-bottom: -0.35rem;
+	}
+
+	&-primary {
+		color: $light-color;
+		background-color: $secondary-color;
+
+		&:hover {
+			background-color: lighten($secondary-color, 8%);
+		}
+	}
+
+	&-danger {
+		background-color: $danger-color;
+		color: $light-color;
+
+		&:hover {
+			background-color: lighten($danger-color, 8%);
+		}
+	}
+
+	&-close {
+		margin-top: 0;
+		background-color: inherit;
+		padding-bottom: 0.8rem;
+		color: $dark-color;
+		font-size: 2.3rem;
+
+		&:hover {
+			color: lighten($dark-color, 10%);
+		}
+	}
+
+	&-center {
+		display: flex;
+		justify-content: space-evenly;
+	}
+
+	&:hover {
+		transform: scale(1.05) translateY(-0.2rem);
+	}
+}
