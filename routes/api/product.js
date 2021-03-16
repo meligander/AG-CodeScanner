@@ -18,12 +18,18 @@ router.get('/', async (req, res) => {
 			if (filter.name && filter.code)
 				result = data.filter(
 					(item) =>
-						item.name.includes(filter.name) && item.code.includes(filter.code)
+						item.name.toLowerCase().includes(filter.name.toLowerCase()) &&
+						item.code.toLowerCase().includes(filter.code.toLowerCase())
 				);
 			else {
 				if (filter.name)
-					result = data.filter((item) => item.name.includes(filter.name));
-				else result = data.filter((item) => item.code.includes(filter.code));
+					result = data.filter((item) =>
+						item.name.toLowerCase().includes(filter.name.toLowerCase())
+					);
+				else
+					result = data.filter((item) =>
+						item.code.toLowerCase().includes(filter.code.toLowerCase())
+					);
 			}
 		} else {
 			result = data;

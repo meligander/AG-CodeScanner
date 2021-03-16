@@ -7,6 +7,7 @@ import Header from './components/layout/Header';
 
 import CodeScanner from './components/pages/CodeScanner';
 import CodeGenerator from './components/pages/CodeGenerator';
+import FileUploader from './components/pages/FileUploader';
 import NotFound from './components/pages/NotFound';
 
 import './styles/main.scss';
@@ -20,6 +21,7 @@ const App = () => {
 				<Switch>
 					<Route exact path='/' component={CodeScanner} />
 					<Route exact path='/generator' component={CodeGenerator} />
+					<Route exact path='/fileuploader' component={FileUploader} />
 					<Route component={NotFound} />
 				</Switch>
 			</section>

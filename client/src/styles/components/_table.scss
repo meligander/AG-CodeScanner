@@ -1,0 +1,40 @@
+@import '../../styles/abstracts/variables';
+
+table {
+	border-collapse: collapse;
+	text-align: center;
+	width: 80%;
+	margin: 3rem auto 1rem;
+	--table-layout: fixed;
+
+	td,
+	th {
+		padding: 1rem 2rem;
+		text-align: center;
+	}
+
+	th {
+		font-size: 1.8rem;
+		background-color: lighten($primary-color, 5%);
+		color: $light-color;
+		opacity: 0.65;
+	}
+
+	tbody tr {
+		border-bottom: 1px solid $light-color;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		&:hover {
+			background-color: lighten($primary-color, 60%);
+		}
+
+		&.selected {
+			background-color: $secondary-color;
+			color: $light-color;
+			opacity: 0.7;
+		}
+	}
+}

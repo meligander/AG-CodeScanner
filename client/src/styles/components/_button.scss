@@ -23,6 +23,15 @@
 
 	&-primary {
 		color: $light-color;
+		background-color: $primary-color;
+
+		&:hover {
+			background-color: lighten($primary-color, 8%);
+		}
+	}
+
+	&-secondary {
+		color: $light-color;
 		background-color: $secondary-color;
 
 		&:hover {

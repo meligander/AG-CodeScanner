@@ -1,0 +1,175 @@
+@import '../../../../styles/abstracts/variables';
+
+.drop {
+	width: 60rem;
+	height: 20rem;
+
+	&-container {
+		display: flex;
+		width: 100%;
+		height: 100%;
+		align-items: center;
+		justify-content: center;
+		border: 3px dashed $primary-color;
+
+		&.lighter {
+			border: 3px dashed $secondary-color;
+			background-color: lighten($secondary-color, 55%);
+		}
+
+		&-message {
+			font-size: 2rem;
+			color: $dark-color;
+		}
+
+		&-icon {
+			font-size: 5rem;
+			margin: 1rem auto;
+			display: block;
+		}
+
+		&-file-input {
+			display: none;
+		}
+	}
+
+	&-file {
+		&-display {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+
+		&-name {
+			color: $dark-color;
+			//margin-left: -10rem;
+			font-size: 1.8rem;
+		}
+
+		&-type {
+			position: relative;
+			color: #abc;
+			font-size: 8rem;
+			width: min-content;
+
+			&-name {
+				position: absolute;
+				border-radius: 2px;
+				font-size: 1.4rem;
+				padding: 0.1rem 0.3rem;
+				top: 3.7rem;
+				left: 0.7rem;
+				box-shadow: 1px 1px 2px #abc;
+				color: #fff;
+				background: $primary-color;
+				text-transform: uppercase;
+			}
+		}
+
+		&-remove {
+			font-size: 3rem;
+			color: $danger-color;
+			margin-bottom: -0.6rem;
+			transition: all 0.2s ease-out;
+
+			&:hover {
+				transform: scale(1.1) translateY(-0.1rem);
+				color: lighten($danger-color, 5%);
+			}
+		}
+	}
+
+	&-upload-modal {
+		height: 100vh;
+		width: 100%;
+		position: fixed;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		top: 0;
+		left: 0;
+		background-color: rgba($dark-color, 0.9);
+		z-index: 20;
+		transition: all 0.3s;
+		visibility: visible;
+
+		&.hide {
+			visibility: hidden;
+			opacity: 0;
+		}
+
+		&-container {
+			width: 50%;
+			height: 40vh;
+			background-color: white;
+			border-radius: 1.5rem;
+		}
+
+		&-text {
+			font-size: 2.5rem;
+			display: flex;
+			justify-content: center;
+			//padding-top: 2rem;
+		}
+
+		&-close {
+			color: black;
+			text-align: end;
+			font-size: 3rem;
+			padding: 1.5rem;
+
+			&.able {
+				color: $danger-color;
+				transition: all 0.2s ease-out;
+
+				&:hover {
+					transform: scale(1.1) translateY(-0.1rem);
+					color: lighten($danger-color, 5%);
+				}
+			}
+		}
+
+		&-progress {
+			width: 90%;
+			margin: 5rem auto;
+			background-color: $light-color;
+			height: 3rem;
+			border-radius: 0.5rem;
+
+			&-bar {
+				display: flex;
+				align-items: center;
+				height: 3rem;
+				border-radius: 0.5rem;
+				background-color: $secondary-color;
+				color: $light-color;
+				font-weight: bold;
+
+				p {
+					text-align: center;
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	&-error,
+	&-file-error,
+	&-upload-modal-error {
+		color: $danger-color;
+		text-align: center;
+	}
+
+	&-error,
+	&-upload-modal-error {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+
+	&-file-error {
+		display: block;
+		margin-top: 0.5rem;
+	}
+}

@@ -57,15 +57,12 @@ const Navbar = () => {
 							<ImQrcode className='navbar-item-icon' />
 						</Link>
 
-						<button
-							type='button'
-							onClick={(e) => {
-								e.preventDefault();
-							}}
+						<Link
+							to='/fileuploader'
 							className={`navbar-item ${showMenu ? 'close' : ''}`}
 						>
 							<CgSoftwareUpload className='navbar-item-icon icon-up' />
-						</button>
+						</Link>
 						<button
 							type='button'
 							onClick={(e) => {

@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import './style.scss';
 
 const Header = () => {
+	const location = useLocation();
+
 	const [title, setTitle] = useState('');
 
 	useEffect(() => {
 		let name = '';
-		switch (window.location.pathname) {
+		switch (location.pathname) {
 			case '/generator':
 				name = 'Generador de Códigos';
 				break;
-			case '/file-upload':
+			case '/fileuploader':
 				name = 'Actualización de Precios';
+				break;
 			default:
 				name = 'Lector de Códigos';
 				break;
 		}
 		setTitle(name);
-	}, [window.location.pathname]);
+	}, [location]);
 
 	return (
 		<header className='header'>

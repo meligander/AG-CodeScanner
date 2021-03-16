@@ -5,7 +5,8 @@
 	width: 100%;
 
 	.form {
-		width: 90%;
+		width: 70%;
+		font-size: 1.5rem;
 
 		&-input {
 			display: flex;
@@ -13,11 +14,15 @@
 		}
 		.form-group {
 			width: 40%;
-			margin-right: 1rem;
 		}
 
 		.btn {
 			margin-top: 0;
+			//font-size: 1.6rem;
 		}
+	}
+
+	.margin-r {
+		margin-right: 3rem;
 	}
 }

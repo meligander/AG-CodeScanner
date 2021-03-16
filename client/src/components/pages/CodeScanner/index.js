@@ -1,10 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
+
+import { loadProducts } from '../../../requests/product';
+
+import Spinner from '../../modals/Spinner';
 
 import './style.scss';
 
 const CodeScanner = () => {
 	const [data, setData] = useState('');
+
+	const [adminValues, setAdminValues] = useState({
+		product: {
+			code: '',
+			name: '',
+			price: 0,
+			img: '',
+		},
+		loading: false,
+	});
+
+	const { product, loading } = adminValues;
+
+	useEffect(async () => {
+		if (data !== '') {
+			setAdminValues((prev) => ({
+				...prev,
+				loading: true,
+			}));
+			const info = await loadProducts({ code: data });
+			setAdminValues((prev) => ({
+				...prev,
+				loading: false,
+				product: info.info[0],
+			}));
+		}
+	}, [data]);
 
 	return (
 		<div className='scanner'>
@@ -17,13 +48,17 @@ const CodeScanner = () => {
 						else setData('');
 					}}
 				/>
+			) : loading ? (
+				<Spinner />
 			) : (
 				<div className='scanner-description'>
-					{/* <p>{data}</p> */}
-					<h3 className='scanner-description-name'>
-						Bordeadora 1500W Tramontina
-					</h3>
-					<p className='scanner-description-price'>$8.921,61</p>
+					<h3 className='scanner-description-name'>{product.name}</h3>
+					<img
+						className='scanner-description-img'
+						src={product.img}
+						alt='Producto de Alovero García'
+					/>
+					<p className='scanner-description-price'>${product.price}</p>
 					<button
 						type='button'
 						onClick={(e) => {

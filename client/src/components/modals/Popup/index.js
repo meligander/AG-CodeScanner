@@ -90,7 +90,7 @@ const Popup = ({ toggleModal, setToggleModal, type, confirm, text }) => {
 				<div className='btn-center'>
 					<button
 						type='button'
-						className='btn btn-primary'
+						className='btn btn-secondary'
 						onClick={(e) => {
 							e.preventDefault();
 							switch (type) {
