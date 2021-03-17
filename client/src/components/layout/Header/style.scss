@@ -15,7 +15,7 @@
 		font-size: 7rem;
 		color: $dark-color;
 		@include respond(small-phone) {
-			font-size: 6.7rem;
+			font-size: 6.4rem;
 		}
 	}
 
@@ -26,7 +26,8 @@
 		margin-top: -1.3rem;
 
 		@include respond(small-phone) {
-			padding-left: 23rem;
+			font-size: 2.7rem;
+			padding-left: 21rem;
 		}
 	}
 }
