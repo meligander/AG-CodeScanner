@@ -35,6 +35,14 @@ body {
 		min-height: 94.6vh;
 		padding: 15rem 3rem 3rem;
 		display: flex;
+
+		@include respond(tab-land) {
+			min-height: 96.4vh;
+		}
+
+		@include respond(phone) {
+			min-height: 97vh;
+		}
 	}
 }
 

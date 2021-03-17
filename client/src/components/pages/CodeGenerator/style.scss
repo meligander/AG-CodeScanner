@@ -25,4 +25,11 @@
 	.margin-r {
 		margin-right: 3rem;
 	}
+
+	&-error {
+		text-align: center;
+		font-size: 2rem;
+		margin: 2rem 0;
+		color: $danger-color;
+	}
 }

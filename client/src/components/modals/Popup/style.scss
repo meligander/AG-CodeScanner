@@ -10,48 +10,98 @@
 	top: 0;
 	left: 0;
 	background-color: rgba($dark-color, 0.9);
-	z-index: 20;
-	transition: all 0.3s;
+	z-index: 100;
+	//transition: all 0.3s;
 	visibility: visible;
 
 	&-content {
 		display: flex;
 		flex-direction: column;
 		width: 50%;
-		padding: 1.8rem;
+		padding: 1rem;
 		opacity: 0.85;
 		background-color: white;
 		border-radius: 3px;
 		box-shadow: 0 2rem 4rem rgba($dark-color, 0.2);
+		transform: translateY(0) scale(1);
+		transition: all 0.2s ease-out;
 	}
 
 	&-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding-bottom: 1.2rem;
+		padding-bottom: 0.5rem;
 		border-bottom: 1px solid $dark-color;
+		padding-left: 1rem;
 
 		&-logo {
-			width: 5.8rem;
-			height: 4rem;
+			width: 5rem;
+			height: 3.5rem;
 		}
+	}
+
+	&-upload {
+		padding-top: 5rem;
+
+		&-text {
+			font-size: 2.5rem;
+			display: flex;
+			justify-content: center;
+			//padding-top: 2rem;
+		}
+
+		&-progress {
+			width: 90%;
+			margin: 5rem auto;
+			background-color: $light-color;
+			height: 3rem;
+			border-radius: 0.5rem;
+
+			&-bar {
+				display: flex;
+				align-items: center;
+				height: 3rem;
+				border-radius: 0.5rem;
+				background-color: $secondary-color;
+				color: $light-color;
+				font-weight: bold;
+
+				p {
+					text-align: center;
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	&-error {
+		color: $danger-color;
+		text-align: center;
+		font-size: 2rem;
+		margin: 2rem 0 0;
 	}
 
 	&-text {
 		padding: 1.5rem 1rem;
 	}
 
-	.form {
-		margin: 2rem auto 0;
-	}
-
 	.btn {
-		margin: 1rem 0;
+		margin: 0.5rem 0;
+		visibility: visible;
+		font-size: 2rem;
+
+		&.hide {
+			visibility: hidden;
+		}
 	}
 
 	&.hide {
 		visibility: hidden;
 		opacity: 0;
+
+		.popup-content {
+			transform: translateY(-3rem) scale(0.5);
+		}
 	}
 }

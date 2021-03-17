@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
 
-import { loadProducts } from '../../../requests/product';
+import { loadProduct } from '../../../requests/product';
 
 import Spinner from '../../modals/Spinner';
 
@@ -28,11 +28,11 @@ const CodeScanner = () => {
 				...prev,
 				loading: true,
 			}));
-			const info = await loadProducts({ code: data });
+			const info = await loadProduct(data);
 			setAdminValues((prev) => ({
 				...prev,
 				loading: false,
-				product: info.info[0],
+				product: info.info,
 			}));
 		}
 	}, [data]);

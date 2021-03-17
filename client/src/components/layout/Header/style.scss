@@ -1,23 +1,32 @@
 @import '../../../styles/abstracts/variables';
+@import '../../../styles/abstracts/mixins';
 
 .header {
 	position: absolute;
 	z-index: 10;
 	top: 3.5rem;
 	left: 50%;
+	width: 90%;
 	transform: translateX(-50%);
 	font-family: 'Cormorant Garamond', serif;
+	text-align: center;
 
 	&-primary {
 		font-size: 7rem;
 		color: $dark-color;
+		@include respond(small-phone) {
+			font-size: 6.7rem;
+		}
 	}
 
 	&-secondary {
 		font-size: 3rem;
-		text-align: end;
 		color: $primary-color;
-		margin-right: -3rem;
-		margin-top: -1rem;
+		padding-left: 30rem;
+		margin-top: -1.3rem;
+
+		@include respond(small-phone) {
+			padding-left: 23rem;
+		}
 	}
 }

@@ -1,11 +1,18 @@
 @import '../../../styles/abstracts/variables';
+@import '../../../styles/abstracts/mixins';
 
 .navbar {
 	position: fixed;
 	opacity: 0.85;
 	top: 5.5rem;
 	left: 5rem;
-	z-index: 1;
+	z-index: 20;
+	visibility: visible;
+
+	@include respond(phone) {
+		visibility: hidden;
+		opacity: 0;
+	}
 
 	* {
 		cursor: pointer;

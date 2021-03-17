@@ -1,41 +1,82 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
 import { CgSoftwareUpload } from 'react-icons/cg';
 import { ImQrcode } from 'react-icons/im';
 
 import Popup from '../../modals/Popup';
+import Spinner from '../../modals/Spinner';
+
+import { loginUser } from '../../../requests/auth';
+import setAuthToken from '../../../utils/setAuthToken';
+
 import letters from '../../../img/letras.svg';
 import './style.scss';
 
-const Navbar = () => {
+const Navbar = ({ history }) => {
 	const [adminValues, setAdminValues] = useState({
 		showMenu: false,
 		toggleModal: false,
-		logged: true,
+		logged: localStorage.getItem('token'),
+		loading: false,
 	});
 
-	const { showMenu, toggleModal, logged } = adminValues;
+	const { showMenu, toggleModal, logged, loading } = adminValues;
+
+	const errorMsg = useRef();
 
 	const setToggleModal = () => {
 		setAdminValues((prev) => ({
 			...prev,
 			toggleModal: !toggleModal,
 		}));
+		errorMsg.current.innerHTML = '';
 	};
 
-	const login = () => {
-		console.log('in');
-		setToggleModal();
+	const login = async (user) => {
+		const res = await loginUser(user);
+		setAdminValues((prev) => ({
+			...prev,
+			loading: true,
+		}));
+
+		if (res.success) {
+			setAuthToken(res.info.token);
+			setAdminValues((prev) => ({
+				...prev,
+				logged: localStorage.getItem('token'),
+			}));
+			setToggleModal();
+			history.push('/generator');
+		} else {
+			setAuthToken();
+			errorMsg.current.innerHTML = res.info;
+		}
+
+		setAdminValues((prev) => ({
+			...prev,
+			loading: false,
+		}));
+	};
+
+	const logout = () => {
+		setAuthToken();
+		setAdminValues((prev) => ({
+			...prev,
+			logged: null,
+		}));
+		history.push('/');
 	};
 
 	return (
 		<>
+			{loading && <Spinner />}
 			<Popup
 				toggleModal={toggleModal}
 				setToggleModal={setToggleModal}
 				type='login'
 				confirm={login}
+				uploadRef={errorMsg}
 			/>
 			<nav
 				className='navbar'
@@ -67,6 +108,7 @@ const Navbar = () => {
 							type='button'
 							onClick={(e) => {
 								e.preventDefault();
+								logout();
 							}}
 							className={`navbar-item ${showMenu ? 'close' : ''}`}
 						>
@@ -94,4 +136,4 @@ const Navbar = () => {
 	);
 };
 
-export default Navbar;
+export default withRouter(Navbar);

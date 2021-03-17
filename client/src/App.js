@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Navbar from './components/layout/Navbar';
@@ -10,9 +10,18 @@ import CodeGenerator from './components/pages/CodeGenerator';
 import FileUploader from './components/pages/FileUploader';
 import NotFound from './components/pages/NotFound';
 
+import PrivateRoutes from './components/routing/PrivateRoutes';
+
+import setAuthToken from './utils/setAuthToken';
+
 import './styles/main.scss';
 
 const App = () => {
+	useEffect(() => {
+		if (localStorage.token) {
+			setAuthToken(localStorage.token);
+		}
+	}, []);
 	return (
 		<>
 			<Navbar />
@@ -20,8 +29,8 @@ const App = () => {
 			<section className='container'>
 				<Switch>
 					<Route exact path='/' component={CodeScanner} />
-					<Route exact path='/generator' component={CodeGenerator} />
-					<Route exact path='/fileuploader' component={FileUploader} />
+					<PrivateRoutes path='/generator' component={CodeGenerator} />
+					<PrivateRoutes path='/fileuploader' component={FileUploader} />
 					<Route component={NotFound} />
 				</Switch>
 			</section>

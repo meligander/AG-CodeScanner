@@ -4,10 +4,19 @@ import { ImCross } from 'react-icons/im';
 import logo from '../../../img/solo_logo.png';
 import './style.scss';
 
-const Popup = ({ toggleModal, setToggleModal, type, confirm, text }) => {
+const Popup = ({
+	toggleModal,
+	setToggleModal,
+	type,
+	confirm,
+	text,
+	finished,
+	uploadRef,
+	progressRef,
+}) => {
 	const [adminValues, setAdminValues] = useState({
 		login: {
-			user: '',
+			username: '',
 			password: '',
 		},
 	});
@@ -18,39 +27,54 @@ const Popup = ({ toggleModal, setToggleModal, type, confirm, text }) => {
 		switch (type) {
 			case 'login':
 				return (
-					<div className='form'>
-						<div className='form-group'>
-							<input
-								type='text'
-								className='form-group-input'
-								placeholder='Usuario'
-								id='user'
-								name='user'
-								onChange={(e) => loginOnChange(e)}
-								value={login.user}
-							/>
-							<label className='form-group-lbl' htmlFor='user'>
-								Usuario
-							</label>
+					<>
+						<p className='popup-error' ref={uploadRef}></p>
+						<div className='form'>
+							<div className='form-group'>
+								<input
+									type='text'
+									className='form-group-input'
+									placeholder='Usuario'
+									id='username'
+									name='username'
+									onChange={(e) => loginOnChange(e)}
+									value={login.username}
+								/>
+								<label className='form-group-lbl' htmlFor='username'>
+									Usuario
+								</label>
+							</div>
+							<div className='form-group'>
+								<input
+									type='password'
+									className='form-group-input'
+									placeholder='Contraseña'
+									id='password'
+									name='password'
+									onChange={(e) => loginOnChange(e)}
+									value={login.password}
+								/>
+								<label className='form-group-lbl' htmlFor='password'>
+									Contraseña
+								</label>
+							</div>
 						</div>
-						<div className='form-group'>
-							<input
-								type='password'
-								className='form-group-input'
-								placeholder='Contraseña'
-								id='password'
-								name='password'
-								onChange={(e) => loginOnChange(e)}
-								value={login.password}
-							/>
-							<label className='form-group-lbl' htmlFor='password'>
-								Contraseña
-							</label>
-						</div>
-					</div>
+					</>
 				);
 			case 'confirm':
 				return <div className='popup-text'>{text}</div>;
+			case 'uploadFile':
+				return (
+					<div className='popup-upload'>
+						<span className='popup-upload-text' ref={uploadRef}></span>
+						<div className='popup-upload-progress'>
+							<div
+								className='popup-upload-progress-bar'
+								ref={progressRef}
+							></div>
+						</div>
+					</div>
+				);
 			default:
 				return <></>;
 		}
@@ -60,6 +84,7 @@ const Popup = ({ toggleModal, setToggleModal, type, confirm, text }) => {
 		setAdminValues((prev) => ({
 			...prev,
 			login: {
+				...prev.login,
 				[e.target.name]: e.target.value,
 			},
 		}));
@@ -76,50 +101,56 @@ const Popup = ({ toggleModal, setToggleModal, type, confirm, text }) => {
 					/>
 					<button
 						type='button'
-						className='btn btn-close'
+						className={`btn btn-close ${
+							finished !== undefined && !finished ? 'hide' : ''
+						}`}
 						onClick={(e) => {
 							e.preventDefault();
-							setToggleModal();
+							if (
+								(finished !== undefined && finished) ||
+								finished === undefined
+							)
+								setToggleModal();
 						}}
 					>
 						<ImCross />
 					</button>
 				</div>
 				{selectType()}
+				{type !== 'uploadFile' && (
+					<div className='btn-center'>
+						<button
+							type='button'
+							className='btn btn-secondary'
+							onClick={(e) => {
+								e.preventDefault();
+								switch (type) {
+									case 'login':
+										confirm(login);
+										break;
+									case 'confirm':
+										confirm();
+										break;
+									default:
+										break;
+								}
+							}}
+						>
+							Aceptar
+						</button>
 
-				<div className='btn-center'>
-					<button
-						type='button'
-						className='btn btn-secondary'
-						onClick={(e) => {
-							e.preventDefault();
-							switch (type) {
-								case 'login':
-									confirm(login);
-									break;
-								case 'confirm':
-									confirm();
-									break;
-								default:
-									break;
-							}
-							setToggleModal();
-						}}
-					>
-						Aceptar
-					</button>
-
-					<button
-						type='button'
-						className='btn btn-danger'
-						onClick={(e) => {
-							e.preventDefault();
-							setToggleModal();
-						}}
-					>
-						Cancelar
-					</button>
-				</div>
+						<button
+							type='button'
+							className='btn btn-danger'
+							onClick={(e) => {
+								e.preventDefault();
+								setToggleModal();
+							}}
+						>
+							Cancelar
+						</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -4,7 +4,8 @@
 	&:visited {
 		font-size: 1.8rem;
 		cursor: pointer;
-		backface-visibility: hidden;
+		backface-visibility: hidden !important;
+		-webkit-backface-visibility: hidden;
 		border: none;
 		padding: 1rem 1.5rem;
 		border-radius: 1.8rem;
@@ -63,6 +64,7 @@
 	&-center {
 		display: flex;
 		justify-content: space-evenly;
+		padding-bottom: 1rem;
 	}
 
 	&:hover {

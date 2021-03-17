@@ -28,3 +28,21 @@ export const loadProducts = async (filterData) => {
 		};
 	}
 };
+
+export const loadProduct = async (code) => {
+	try {
+		const res = await api.get(`/product/one?code=${code}`);
+
+		return {
+			info: res.data,
+			success: true,
+		};
+	} catch (err) {
+		const msg = err.response.data.msg;
+		const type = err.response.statusText;
+		return {
+			info: msg ? msg : type,
+			success: false,
+		};
+	}
+};

@@ -3,6 +3,8 @@ import { IoMdCloseCircle } from 'react-icons/io';
 import { BiFileBlank, BiDownload } from 'react-icons/bi';
 import api from '../../../../utils/api';
 
+import Popup from '../../../modals/Popup';
+
 import './style.scss';
 
 const DropZone = () => {
@@ -109,6 +111,13 @@ const DropZone = () => {
 		}));
 	};
 
+	const setToggleModal = () => {
+		setAdminValues((prev) => ({
+			...prev,
+			toggleModal: !toggleModal,
+		}));
+	};
+
 	const uploadFile = async () => {
 		let data = new FormData();
 		data.append('file', selectedFile);
@@ -119,15 +128,10 @@ const DropZone = () => {
 			toggleModal: true,
 		}));
 
-		console.log(data, selectedFile);
-
-		progressRef.current.innerHTML = `<p>20%</p>`;
-		progressRef.current.style.width = `20%`;
-
-		/* api
+		api
 			.post('/file/upload', data, {
 				onUploadProgress: (progressEvent) => {
-					const uploadPercentage = Math.floor(
+					let uploadPercentage = Math.floor(
 						(progressEvent.loaded / progressEvent.total) * 100
 					);
 					progressRef.current.innerHTML = `<p>${uploadPercentage}%</p>`;
@@ -139,15 +143,15 @@ const DropZone = () => {
 							...prev,
 							selectedFile: '',
 							uploaded: false,
-                            finished: true
+							finished: true,
 						}));
 					}
 				},
 			})
 			.catch(() => {
-				uploadRef.current.innerHTML = `<span class="drop-upload-modal-error">Error al subir el archivo</span>`;
-				progressRef.current.style.backgroundColor = '$danger-color';
-			}); */
+				uploadRef.current.innerHTML = `<span class="popup-error">Error al subir el archivo</span>`;
+				progressRef.current.style.backgroundColor = '#b92525';
+			});
 	};
 
 	return (
@@ -218,26 +222,14 @@ const DropZone = () => {
 				)}
 			</div>
 
-			<div className={`drop-upload-modal ${!toggleModal ? 'hide' : ''}`}>
-				<div className='drop-upload-modal-container'>
-					<div
-						className={`drop-upload-modal-close ${finished ? 'able' : ''}`}
-						onClick={() =>
-							finished &&
-							setAdminValues((prev) => ({ ...prev, toggleModal: false }))
-						}
-					>
-						<IoMdCloseCircle />
-					</div>
-					<span className='drop-upload-modal-text' ref={uploadRef}></span>
-					<div className='drop-upload-modal-progress'>
-						<div
-							className='drop-upload-modal-progress-bar'
-							ref={progressRef}
-						></div>
-					</div>
-				</div>
-			</div>
+			<Popup
+				type='uploadFile'
+				finished={true}
+				uploadRef={uploadRef}
+				progressRef={progressRef}
+				setToggleModal={setToggleModal}
+				toggleModal={toggleModal}
+			/>
 		</>
 	);
 };

@@ -17,6 +17,7 @@ const CodeGenerator = () => {
 		products: [],
 		loading: false,
 		selected: '',
+		error: '',
 	});
 
 	const {
@@ -24,6 +25,7 @@ const CodeGenerator = () => {
 		products,
 		loading,
 		selected,
+		error,
 	} = adminValues;
 
 	const onChange = (e) => {
@@ -40,6 +42,7 @@ const CodeGenerator = () => {
 		setAdminValues((prev) => ({
 			...prev,
 			loading: true,
+			error: '',
 		}));
 		const products = await loadProducts({ code, name });
 		if (products.success)
@@ -48,21 +51,35 @@ const CodeGenerator = () => {
 				products: products.info,
 				loading: false,
 			}));
-		else console.log('error', products.info);
+		else
+			setAdminValues((prev) => ({
+				...prev,
+				error: products.info,
+				loading: false,
+			}));
 	};
 
 	const select = (item) => {
 		setAdminValues((prev) => ({
 			...prev,
 			selected: item.code,
+			error: '',
 		}));
 	};
 
 	const generateCode = async (code) => {
-		window.open(
-			`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${code}`,
-			'_blank'
-		);
+		if (code)
+			window.open(
+				`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${code}`,
+				'_blank'
+			);
+		else {
+			setAdminValues((prev) => ({
+				...prev,
+				error: 'Debe seleccionar un producto para generar el código',
+			}));
+			window.scroll(0, 0);
+		}
 	};
 
 	return (
@@ -111,6 +128,7 @@ const CodeGenerator = () => {
 					</button>
 				</div>
 			</form>
+			{error !== '' && <p className='generator-error'>{error}</p>}
 			<table>
 				<thead>
 					<tr>

@@ -1,4 +1,5 @@
 @import '../../../styles/abstracts/variables';
+@import '../../../styles/abstracts/mixins';
 
 .scanner {
 	display: flex;
@@ -7,6 +8,10 @@
 	width: 100%;
 	height: auto;
 	position: relative;
+
+	@include respond(scanner-notshow) {
+		display: none;
+	}
 
 	&-description {
 		text-align: center;
