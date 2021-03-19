@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
+import React, { useState } from 'react';
+import QrReader from 'react-qr-scanner';
 
 import { loadProduct } from '../../../requests/product';
 
@@ -8,8 +8,6 @@ import Spinner from '../../modals/Spinner';
 import './style.scss';
 
 const CodeScanner = () => {
-	const [data, setData] = useState('');
-
 	const [adminValues, setAdminValues] = useState({
 		product: {
 			code: '',
@@ -18,35 +16,63 @@ const CodeScanner = () => {
 			img: '',
 		},
 		loading: false,
+		delay: 50,
+		result: '',
+		error: '',
 	});
 
-	const { product, loading } = adminValues;
+	const { product, loading, delay, result, error } = adminValues;
 
-	useEffect(async () => {
-		if (data !== '') {
+	const handleScan = async (data) => {
+		if (data) {
 			setAdminValues((prev) => ({
 				...prev,
+				result: data.text,
+				err: '',
 				loading: true,
 			}));
-			const info = await loadProduct(data);
-			setAdminValues((prev) => ({
-				...prev,
-				loading: false,
-				product: info.info,
-			}));
+			const res = await loadProduct(data.text);
+
+			if (res.success) {
+				setAdminValues((prev) => ({
+					...prev,
+					loading: false,
+					product: res.info,
+				}));
+			} else {
+				setAdminValues((prev) => ({
+					...prev,
+					loading: false,
+					error: res.info,
+				}));
+			}
 		}
-	}, [data]);
+	};
+
+	const handleError = (err) => {
+		setAdminValues((prev) => ({
+			...prev,
+			error: err,
+		}));
+	};
+
+	const cleanItem = () => {
+		setAdminValues((prev) => ({
+			...prev,
+			result: '',
+			error: '',
+		}));
+	};
 
 	return (
 		<div className='scanner'>
-			{data === '' ? (
-				<BarcodeScannerComponent
-					width={350}
-					height={350}
-					onUpdate={(err, result) => {
-						if (result) setData(result.text);
-						else setData('');
-					}}
+			{error !== '' && <p className='scanner-error'>{error}</p>}
+			{result === '' ? (
+				<QrReader
+					delay={delay}
+					style={{ height: 240, width: 320 }}
+					onError={handleError}
+					onScan={handleScan}
 				/>
 			) : loading ? (
 				<Spinner />
@@ -63,7 +89,7 @@ const CodeScanner = () => {
 						type='button'
 						onClick={(e) => {
 							e.preventDefault();
-							setData('');
+							cleanItem();
 						}}
 						className='scanner-description-btn btn btn-primary'
 					>
