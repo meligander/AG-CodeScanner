@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import QrReader from 'react-qr-scanner';
+import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
 
 import { loadProduct } from '../../../requests/product';
 
@@ -16,44 +17,34 @@ const CodeScanner = () => {
 			img: '',
 		},
 		loading: false,
-		delay: 50,
 		result: '',
 		error: '',
 	});
 
-	const { product, loading, delay, result, error } = adminValues;
+	const { product, loading, result, error } = adminValues;
 
 	const handleScan = async (data) => {
-		if (data) {
-			setAdminValues((prev) => ({
-				...prev,
-				result: data.text,
-				err: '',
-				loading: true,
-			}));
-			const res = await loadProduct(data.text);
-
-			if (res.success) {
-				setAdminValues((prev) => ({
-					...prev,
-					loading: false,
-					product: res.info,
-				}));
-			} else {
-				setAdminValues((prev) => ({
-					...prev,
-					loading: false,
-					error: res.info,
-				}));
-			}
-		}
-	};
-
-	const handleError = (err) => {
 		setAdminValues((prev) => ({
 			...prev,
-			error: err,
+			result: data.text,
+			err: '',
+			loading: true,
 		}));
+		const res = await loadProduct(data.text);
+
+		if (res.success) {
+			setAdminValues((prev) => ({
+				...prev,
+				loading: false,
+				product: res.info,
+			}));
+		} else {
+			setAdminValues((prev) => ({
+				...prev,
+				loading: false,
+				error: res.info,
+			}));
+		}
 	};
 
 	const cleanItem = () => {
@@ -68,11 +59,12 @@ const CodeScanner = () => {
 		<div className='scanner'>
 			{error !== '' && <p className='scanner-error'>{error}</p>}
 			{result === '' ? (
-				<QrReader
-					delay={delay}
-					style={{ height: 240, width: 320 }}
-					onError={handleError}
-					onScan={handleScan}
+				<BarcodeScannerComponent
+					width={500}
+					height={500}
+					onUpdate={(err, result) => {
+						if (result) handleScan(result);
+					}}
 				/>
 			) : loading ? (
 				<Spinner />

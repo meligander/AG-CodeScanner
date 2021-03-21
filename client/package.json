@@ -10,6 +10,7 @@
 		"react-qr-scanner": "^1.0.0-alpha.7",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "4.0.2",
+		"react-webcam-barcode-scanner": "0.0.2-rc2",
 		"web-vitals": "^1.0.1"
 	},
 	"scripts": {
