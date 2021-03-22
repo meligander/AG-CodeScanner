@@ -224,7 +224,7 @@ const DropZone = () => {
 
 			<Popup
 				type='uploadFile'
-				finished={true}
+				finished={finished}
 				uploadRef={uploadRef}
 				progressRef={progressRef}
 				setToggleModal={setToggleModal}

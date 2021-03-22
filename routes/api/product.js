@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-let data = require('../../output/data.json');
+const fs = require('fs');
+const path = require('path');
 
 //Middleware
 const auth = require('../../middleware/auth');
@@ -8,11 +9,17 @@ const auth = require('../../middleware/auth');
 //@route    GET /api/product
 //@desc     get all products || with filter
 //@access   Private
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, (req, res) => {
 	const filter = req.query;
 
 	try {
 		let result = [];
+		let data = fs.readFileSync(
+			path.resolve(__dirname, '../../output/data.json'),
+			'utf8'
+		);
+
+		data = JSON.parse(data);
 
 		if (filter.name || filter.code) {
 			if (filter.name && filter.code)
@@ -54,6 +61,13 @@ router.get('/one', async (req, res) => {
 	const filter = req.query;
 
 	try {
+		let data = fs.readFileSync(
+			path.resolve(__dirname, '../../output/data.json'),
+			'utf8'
+		);
+
+		data = JSON.parse(data);
+
 		let result = data.filter((item) =>
 			item.code.toLowerCase().includes(filter.code.toLowerCase())
 		);

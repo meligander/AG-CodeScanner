@@ -36,7 +36,8 @@ router.post(
 
 		try {
 			const isMatch = await bcrypt.compare(password, process.env.PASSWORD);
-			if (!isMatch || process.env.USER !== username) {
+
+			if (!isMatch || process.env.AGUSER !== username) {
 				return res.status(400).json({ msg: 'Credenciales Inválidas' });
 			}
 			const payload = {

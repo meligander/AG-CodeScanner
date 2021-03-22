@@ -3,6 +3,7 @@ const router = express.Router();
 
 const csvParser = require('csv-parser');
 const fs = require('fs');
+const path = require('path');
 
 const multer = require('multer');
 let storage = multer.diskStorage({
@@ -16,8 +17,6 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage: storage });
 
-let data = require('../../output/data.json');
-
 //Middleware
 const auth = require('../../middleware/auth');
 
@@ -26,6 +25,13 @@ const auth = require('../../middleware/auth');
 //@access   Private
 router.post('/upload', [auth, upload.single('file')], (req, res) => {
 	let results = [];
+
+	let data = fs.readFileSync(
+		path.resolve(__dirname, '../../output/data.json'),
+		'utf8'
+	);
+
+	data = JSON.parse(data);
 
 	fs.createReadStream(req.file.path)
 		.on('error', (err) => {

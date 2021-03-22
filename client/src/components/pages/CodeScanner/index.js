@@ -60,8 +60,8 @@ const CodeScanner = () => {
 			{error !== '' && <p className='scanner-error'>{error}</p>}
 			{result === '' ? (
 				<BarcodeScannerComponent
-					width={500}
-					height={500}
+					width={350}
+					height={350}
 					onUpdate={(err, result) => {
 						if (result) handleScan(result);
 					}}
