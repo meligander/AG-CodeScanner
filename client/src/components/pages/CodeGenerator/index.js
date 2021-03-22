@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { BiSearchAlt } from 'react-icons/bi';
 import { ImQrcode } from 'react-icons/im';
 
@@ -56,6 +55,7 @@ const CodeGenerator = () => {
 				...prev,
 				error: products.info,
 				loading: false,
+				products: [],
 			}));
 	};
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import QrReader from 'react-qr-scanner';
 import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
 
 import { loadProduct } from '../../../requests/product';
@@ -24,6 +23,7 @@ const CodeScanner = () => {
 	const { product, loading, result, error } = adminValues;
 
 	const handleScan = async (data) => {
+		console.log(data);
 		setAdminValues((prev) => ({
 			...prev,
 			result: data.text,
@@ -31,6 +31,7 @@ const CodeScanner = () => {
 			loading: true,
 		}));
 		const res = await loadProduct(data.text);
+		console.log(res);
 
 		if (res.success) {
 			setAdminValues((prev) => ({
@@ -43,6 +44,7 @@ const CodeScanner = () => {
 				...prev,
 				loading: false,
 				error: res.info,
+				product: { code: '', name: '', price: 0, img: '' },
 			}));
 		}
 	};
@@ -51,17 +53,17 @@ const CodeScanner = () => {
 		setAdminValues((prev) => ({
 			...prev,
 			result: '',
+			product: { code: '', name: '', price: 0, img: '' },
 			error: '',
 		}));
 	};
 
 	return (
 		<div className='scanner'>
-			{error !== '' && <p className='scanner-error'>{error}</p>}
 			{result === '' ? (
 				<BarcodeScannerComponent
-					width={350}
-					height={350}
+					width={450}
+					height={450}
 					onUpdate={(err, result) => {
 						if (result) handleScan(result);
 					}}
@@ -70,13 +72,19 @@ const CodeScanner = () => {
 				<Spinner />
 			) : (
 				<div className='scanner-description'>
-					<h3 className='scanner-description-name'>{product.name}</h3>
-					<img
-						className='scanner-description-img'
-						src={product.img}
-						alt='Producto de Alovero García'
-					/>
-					<p className='scanner-description-price'>${product.price}</p>
+					{error === '' ? (
+						<>
+							<h3 className='scanner-description-name'>{product.name}</h3>
+							<img
+								className='scanner-description-img'
+								src={product.img}
+								alt='Producto de Alovero García'
+							/>
+							<p className='scanner-description-price'>${product.price}</p>
+						</>
+					) : (
+						<p className='scanner-error'>{error}</p>
+					)}
 					<button
 						type='button'
 						onClick={(e) => {

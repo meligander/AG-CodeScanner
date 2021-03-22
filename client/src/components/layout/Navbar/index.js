@@ -45,18 +45,18 @@ const Navbar = ({ history }) => {
 			setAdminValues((prev) => ({
 				...prev,
 				logged: localStorage.getItem('token'),
+				loading: false,
 			}));
 			setToggleModal();
 			history.push('/generator');
 		} else {
 			setAuthToken();
+			setAdminValues((prev) => ({
+				...prev,
+				loading: false,
+			}));
 			errorMsg.current.innerHTML = res.info;
 		}
-
-		setAdminValues((prev) => ({
-			...prev,
-			loading: false,
-		}));
 	};
 
 	const logout = () => {
