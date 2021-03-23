@@ -34,11 +34,11 @@ const Navbar = ({ history }) => {
 	};
 
 	const login = async (user) => {
-		const res = await loginUser(user);
 		setAdminValues((prev) => ({
 			...prev,
 			loading: true,
 		}));
+		const res = await loginUser(user);
 
 		if (res.success) {
 			setAuthToken(res.info.token);
