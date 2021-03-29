@@ -12,6 +12,7 @@
 	&-description {
 		text-align: center;
 		margin-top: 4rem;
+		font-size: 2rem;
 
 		&-name {
 			font-size: 3rem;
@@ -25,20 +26,35 @@
 
 		&-price {
 			font-size: 4rem;
+			padding-bottom: 2rem;
 		}
 
 		&-btn {
 			text-align: center;
-			margin-top: 5rem !important;
-			/* position: absolute;
-			bottom: 0;
-			left: 50%;
-			transform: translateX(-50%);
-			width: max-content; */
+			margin-top: 3rem !important;
 
-			&:hover {
-				transform: /* translateX(-50%) */ scale(1.1) translateY(-0.1rem) !important;
+			.btn:not(:last-child) {
+				margin-right: 1rem;
 			}
+		}
+
+		&-msg {
+			&-success {
+				color: $secondary-color;
+			}
+
+			&-danger {
+				color: $danger-color;
+			}
+		}
+	}
+
+	&-btn {
+		margin: 0;
+		text-align: center;
+
+		.btn {
+			margin: 0 !important;
 		}
 	}
 

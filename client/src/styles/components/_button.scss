@@ -3,6 +3,8 @@
 	&:link,
 	&:visited {
 		font-size: 1.8rem;
+		display: inline-block;
+		font-family: 'Times New Roman', Times, serif;
 		cursor: pointer;
 		backface-visibility: hidden !important;
 		-webkit-backface-visibility: hidden;
@@ -19,7 +21,7 @@
 	}
 
 	&-icon {
-		margin-bottom: -0.35rem;
+		margin-bottom: -0.28rem;
 	}
 
 	&-primary {
@@ -37,6 +39,15 @@
 
 		&:hover {
 			background-color: lighten($secondary-color, 8%);
+		}
+	}
+
+	&-tertiary {
+		color: $light-color;
+		background-color: $dark-color;
+
+		&:hover {
+			background-color: lighten($dark-color, 8%);
 		}
 	}
 

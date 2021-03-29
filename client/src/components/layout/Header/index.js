@@ -17,6 +17,9 @@ const Header = () => {
 			case '/fileuploader':
 				name = 'Actualización de Precios';
 				break;
+			case '/list':
+				name = 'Lista de Productos';
+				break;
 			default:
 				name = 'Lector de Códigos';
 				break;

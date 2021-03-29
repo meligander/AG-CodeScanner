@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+	AiOutlineScan,
+	AiOutlinePlus,
+	AiOutlineUnorderedList,
+} from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
 
-import { loadProduct } from '../../../requests/product';
+import { loadProduct, addProduct } from '../../../requests/product';
 
 import Spinner from '../../modals/Spinner';
 
@@ -18,12 +24,22 @@ const CodeScanner = () => {
 		loading: false,
 		result: '',
 		error: '',
+		listMsg: '',
 	});
 
-	const { product, loading, result, error } = adminValues;
+	const { product, loading, result, error, listMsg } = adminValues;
+
+	const useMounted = () => {
+		const mounted = useMemo(() => ({ current: true }), []);
+		useEffect(() => {
+			return () => {
+				mounted.current = false;
+			};
+		}, [mounted]);
+		return mounted;
+	};
 
 	const handleScan = async (data) => {
-		console.log(data);
 		setAdminValues((prev) => ({
 			...prev,
 			result: data.text,
@@ -31,7 +47,6 @@ const CodeScanner = () => {
 			loading: true,
 		}));
 		const res = await loadProduct(data.text);
-		console.log(res);
 
 		if (res.success) {
 			setAdminValues((prev) => ({
@@ -58,16 +73,39 @@ const CodeScanner = () => {
 		}));
 	};
 
+	const addScannedProduct = () => {
+		const res = addProduct(product.code);
+		setAdminValues((prev) => ({
+			...prev,
+			listMsg: res,
+		}));
+
+		setTimeout(function () {
+			if (useMounted)
+				setAdminValues((prev) => ({
+					...prev,
+					listMsg: '',
+				}));
+		}, 5000);
+	};
+
 	return (
 		<div className='scanner'>
 			{result === '' ? (
-				<BarcodeScannerComponent
-					width={450}
-					height={450}
-					onUpdate={(err, result) => {
-						if (result) handleScan(result);
-					}}
-				/>
+				<div>
+					<BarcodeScannerComponent
+						width={450}
+						height={450}
+						onUpdate={(err, result) => {
+							if (result) handleScan(result);
+						}}
+					/>
+					<div className='scanner-btn'>
+						<Link to='/list' className='btn btn-tertiary'>
+							<AiOutlineUnorderedList className='btn-icon' /> Lista
+						</Link>
+					</div>
+				</div>
 			) : loading ? (
 				<Spinner />
 			) : (
@@ -85,16 +123,45 @@ const CodeScanner = () => {
 					) : (
 						<p className='scanner-error'>{error}</p>
 					)}
-					<button
-						type='button'
-						onClick={(e) => {
-							e.preventDefault();
-							cleanItem();
-						}}
-						className='scanner-description-btn btn btn-primary'
-					>
-						Volver a Escanear
-					</button>
+
+					{listMsg !== '' && (
+						<p
+							className={`scanner-description-msg-${
+								listMsg.success ? 'success' : 'danger'
+							}`}
+						>
+							{listMsg.info}
+						</p>
+					)}
+					<div className='scanner-description-btn'>
+						{error === '' && (
+							<button
+								type='button'
+								onClick={(e) => {
+									e.preventDefault();
+									addScannedProduct();
+								}}
+								className='btn btn-secondary'
+							>
+								<AiOutlinePlus className='btn-icon' /> Agrear
+							</button>
+						)}
+
+						<Link to='/list' className='btn btn-tertiary'>
+							<AiOutlineUnorderedList className='btn-icon' /> Lista
+						</Link>
+
+						<button
+							type='button'
+							onClick={(e) => {
+								e.preventDefault();
+								cleanItem();
+							}}
+							className='btn btn-primary'
+						>
+							<AiOutlineScan className='btn-icon' /> Escanear
+						</button>
+					</div>
 				</div>
 			)}
 		</div>

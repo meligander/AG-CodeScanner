@@ -83,4 +83,45 @@ router.get('/one', async (req, res) => {
 	}
 });
 
+//@route    GET /api/product/list
+//@desc     get the list of products
+//@access   Public
+router.get('/list', async (req, res) => {
+	const array = req.query.productsList;
+
+	try {
+		let result = [];
+		let data = fs.readFileSync(
+			path.resolve(__dirname, '../../output/data.json'),
+			'utf8'
+		);
+
+		data = JSON.parse(data);
+
+		for (let x = 0; x < array.length; x++) {
+			let product = array[x].split(',');
+
+			let obj = {
+				code: product[0],
+				quantity: Number(product[1]),
+			};
+
+			product = data.filter((item) => item.code.includes(obj.code));
+
+			obj = {
+				...obj,
+				...product[0],
+				total: Math.floor(product[0].price * obj.quantity * 100) / 100,
+			};
+
+			result.push(obj);
+		}
+
+		res.json(result);
+	} catch (err) {
+		console.error(err.message);
+		return res.status(500).send('Server Error');
+	}
+});
+
 module.exports = router;
