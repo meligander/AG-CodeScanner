@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
 	AiOutlineScan,
 	AiOutlinePlus,
@@ -29,15 +29,13 @@ const CodeScanner = () => {
 
 	const { product, loading, result, error, listMsg } = adminValues;
 
-	const useMounted = () => {
-		const mounted = useMemo(() => ({ current: true }), []);
-		useEffect(() => {
-			return () => {
-				mounted.current = false;
-			};
-		}, [mounted]);
-		return mounted;
-	};
+	const componentIsMounted = useRef(true);
+
+	useEffect(() => {
+		return () => {
+			componentIsMounted.current = false;
+		};
+	}, []);
 
 	const handleScan = async (data) => {
 		setAdminValues((prev) => ({
@@ -81,12 +79,16 @@ const CodeScanner = () => {
 		}));
 
 		setTimeout(function () {
-			if (useMounted)
+			if (componentIsMounted.current)
 				setAdminValues((prev) => ({
 					...prev,
 					listMsg: '',
 				}));
 		}, 5000);
+	};
+
+	const formatNumber = (number) => {
+		return new Intl.NumberFormat('de-DE').format(number);
 	};
 
 	return (
@@ -118,7 +120,9 @@ const CodeScanner = () => {
 								src={product.img}
 								alt='Producto de Alovero García'
 							/>
-							<p className='scanner-description-price'>${product.price}</p>
+							<p className='scanner-description-price'>
+								${formatNumber(product.price)}
+							</p>
 						</>
 					) : (
 						<p className='scanner-error'>{error}</p>

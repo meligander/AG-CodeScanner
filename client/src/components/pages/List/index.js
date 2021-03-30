@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoTrashOutline } from 'react-icons/io5';
-import { AiOutlineScan, AiOutlineClear } from 'react-icons/ai';
+import {
+	AiOutlineScan,
+	AiOutlineClear,
+	AiOutlineMinusSquare,
+	AiOutlinePlusSquare,
+	AiOutlineCloseSquare,
+} from 'react-icons/ai';
+import { MdCancel } from 'react-icons/md';
 
 import {
 	loadListProducts,
@@ -98,8 +105,42 @@ const List = () => {
 		}));
 	};
 
+	const changeItemQuantity = (item, plus) => {
+		let newProducts = [...products];
+
+		const quantity = plus
+			? newProducts[item].quantity + 1
+			: newProducts[item].quantity - 1;
+
+		console.log(quantity);
+
+		newProducts[item] = {
+			...newProducts[item],
+			quantity,
+			total: roundNumber(quantity * newProducts[item].price),
+		};
+
+		changeQuantity({ code: newProducts[item].code, quantity });
+
+		let total = 0;
+
+		newProducts.map((item) => (total = total + item.total));
+
+		total = roundNumber(total);
+
+		setAdminValues((prev) => ({
+			...prev,
+			products: newProducts,
+			total,
+		}));
+	};
+
 	const roundNumber = (number) => {
 		return Math.floor(number * 100) / 100;
+	};
+
+	const formatNumber = (number) => {
+		return new Intl.NumberFormat('de-DE').format(number);
 	};
 
 	return (
@@ -108,22 +149,22 @@ const List = () => {
 				<div className='list'>
 					{error === '' ? (
 						<>
-							<div className='wrapper'>
-								<table>
-									<thead>
-										<tr>
-											<th>Nombre del Producto</th>
-											<th>Precio Unitario</th>
-											<th>Cantidad</th>
-											<th>Total</th>
-											<th>&nbsp;</th>
-										</tr>
-									</thead>
-									<tbody>
-										{products.map((item, i) => (
-											<tr key={i}>
+							<table className='table'>
+								<thead>
+									<tr>
+										<th>Nombre del Producto</th>
+										<th>Precio Unitario</th>
+										<th>Cantidad</th>
+										<th>Total</th>
+										<th>&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody>
+									{products.map((item, i) => (
+										<React.Fragment key={i}>
+											<tr className='table-full'>
 												<td>{item.name}</td>
-												<td>${item.price}</td>
+												<td>${formatNumber(item.price)}</td>
 												<td>
 													<input
 														className='form-group-input'
@@ -132,7 +173,7 @@ const List = () => {
 														value={item.quantity}
 													/>
 												</td>
-												<td>${item.total}</td>
+												<td>${formatNumber(item.total)}</td>
 												<td>
 													<button
 														type='button'
@@ -146,12 +187,82 @@ const List = () => {
 													</button>
 												</td>
 											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
+											<tr className='table-small'>
+												<td className='table-small-img'>
+													<img
+														src={item.img}
+														alt='Producto de Alovero Garcia'
+													/>
+													<div className='table-small-img-quantity'>
+														{item.quantity === 1 ? (
+															<button
+																className='table-small-img-quantity-icon danger'
+																onClick={(e) => {
+																	e.preventDefault();
+																	deleteProductFromList(item.code);
+																}}
+																type='button'
+															>
+																<AiOutlineCloseSquare />
+															</button>
+														) : (
+															<button
+																className='table-small-img-quantity-icon'
+																onClick={(e) => {
+																	e.preventDefault();
+																	changeItemQuantity(i, false);
+																}}
+																type='button'
+															>
+																<AiOutlineMinusSquare />
+															</button>
+														)}
+
+														<p className='table-small-img-quantity-number'>
+															{item.quantity}
+														</p>
+														<button
+															className='btn table-small-img-quantity-icon'
+															type='button'
+															onClick={(e) => {
+																e.preventDefault();
+																changeItemQuantity(i, true);
+															}}
+														>
+															<AiOutlinePlusSquare />
+														</button>
+													</div>
+												</td>
+												<td className='table-small-desc'>
+													<div className='table-small-desc-flex'>
+														<p className='table-small-desc-name'>{item.name}</p>
+														<button
+															type='button'
+															className='btn table-small-desc-cancel'
+															onClick={(e) => {
+																e.preventDefault();
+																deleteProductFromList(item.code);
+															}}
+														>
+															<MdCancel />
+														</button>
+													</div>
+													<p className='table-small-desc-price'>
+														${formatNumber(item.price)}
+													</p>
+
+													<p className='table-small-desc-total'>
+														Subtotal: ${formatNumber(item.total)}
+													</p>
+												</td>
+											</tr>
+										</React.Fragment>
+									))}
+								</tbody>
+							</table>
 							<p className='list-total'>
-								Total: <span className='list-total-price'>${total}</span>
+								Total:{' '}
+								<span className='list-total-price'>${formatNumber(total)}</span>
 							</p>
 							<div className='btn-center'>
 								<Link to='/' className='btn btn-primary'>

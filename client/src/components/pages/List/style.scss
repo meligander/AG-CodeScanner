@@ -20,10 +20,123 @@
 		text-align: end;
 		font-size: 2rem;
 
+		@include respond(phone) {
+			margin: 3rem 1rem 0;
+		}
+
 		&-price {
 			font-size: 2.5rem;
 			font-weight: bold;
 			color: $dark-color;
+		}
+	}
+
+	.table {
+		@include respond(phone) {
+			width: 100%;
+		}
+
+		&-full {
+			.form-group-input {
+				width: 70%;
+				margin: 0 auto;
+			}
+
+			@include respond(phone) {
+				visibility: hidden;
+				display: none;
+			}
+		}
+
+		&-small {
+			visibility: hidden;
+			display: none;
+			width: 100%;
+			border-bottom: 1px solid $primary-color;
+			min-height: 20rem;
+
+			@include respond(phone) {
+				display: table;
+				visibility: visible;
+			}
+
+			&-img {
+				width: 20%;
+				img {
+					width: 7.5rem;
+				}
+				&-quantity {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin-top: 1.5rem;
+					font-size: 2.5rem;
+
+					&-number {
+						padding: 0.5rem;
+					}
+
+					&-icon {
+						font-size: 2.7rem;
+						color: $dark-color;
+						background-color: inherit;
+						padding: 0.6rem 0 0;
+						margin: 0;
+						border: none;
+
+						&:active,
+						&:focus {
+							outline: none;
+						}
+
+						&.danger {
+							color: $danger-color;
+						}
+
+						&.btn:hover {
+							transform: none !important;
+						}
+					}
+				}
+			}
+
+			&-desc {
+				width: 80%;
+				text-align: start;
+				padding: 1.5rem 1rem;
+				vertical-align: top;
+				position: relative;
+
+				&-flex {
+					display: flex;
+					align-items: flex-start;
+				}
+
+				&-cancel {
+					font-size: 3.5rem;
+					margin: -0.5rem 0 0 0.8rem;
+					padding: 0;
+					background-color: inherit;
+					color: $danger-color;
+				}
+
+				&-name {
+					font-size: 2.3rem;
+					color: $dark-color;
+				}
+
+				&-price {
+					margin-top: 1rem;
+					font-size: 1.8rem;
+				}
+
+				&-total {
+					font-size: 2rem;
+					position: absolute;
+					bottom: 1.5rem;
+					right: 1rem;
+				}
+			}
 		}
 	}
 

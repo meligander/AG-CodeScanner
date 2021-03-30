@@ -82,6 +82,10 @@ const CodeGenerator = () => {
 		}
 	};
 
+	const formatNumber = (number) => {
+		return new Intl.NumberFormat('de-DE').format(number);
+	};
+
 	return (
 		<section className='generator'>
 			{loading && <Spinner />}
@@ -147,7 +151,7 @@ const CodeGenerator = () => {
 							>
 								<td>{product.code}</td>
 								<td>{product.name}</td>
-								<td>${product.price}</td>
+								<td>${formatNumber(product.price)}</td>
 							</tr>
 						))}
 				</tbody>
