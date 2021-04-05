@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { ImQrcode } from 'react-icons/im';
 
-import { loadProducts } from '../../../requests/product';
+import { loadProducts, formatNumber } from '../../../requests/product';
 
 import Spinner from '../../modals/Spinner';
 import './style.scss';
@@ -80,10 +80,6 @@ const CodeGenerator = () => {
 			}));
 			window.scroll(0, 0);
 		}
-	};
-
-	const formatNumber = (number) => {
-		return new Intl.NumberFormat('de-DE').format(number);
 	};
 
 	return (

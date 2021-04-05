@@ -7,7 +7,11 @@ import {
 import { Link } from 'react-router-dom';
 import BarcodeScannerComponent from 'react-webcam-barcode-scanner';
 
-import { loadProduct, addProduct } from '../../../requests/product';
+import {
+	loadProduct,
+	addProduct,
+	formatNumber,
+} from '../../../requests/product';
 
 import Spinner from '../../modals/Spinner';
 
@@ -85,10 +89,6 @@ const CodeScanner = () => {
 					listMsg: '',
 				}));
 		}, 5000);
-	};
-
-	const formatNumber = (number) => {
-		return new Intl.NumberFormat('de-DE').format(number);
 	};
 
 	return (

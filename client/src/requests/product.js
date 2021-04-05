@@ -143,3 +143,8 @@ export const deleteProduct = (code) => {
 export const cleanList = () => {
 	localStorage.removeItem('productsList');
 };
+
+export const formatNumber = (number) => {
+	if (number) return new Intl.NumberFormat('de-DE').format(number);
+	else return null;
+};

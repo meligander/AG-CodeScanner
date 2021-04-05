@@ -34,6 +34,14 @@
 	.table {
 		@include respond(phone) {
 			width: 100%;
+
+			tr {
+				border: none;
+
+				&:hover {
+					background-color: white;
+				}
+			}
 		}
 
 		&-full {
@@ -52,15 +60,17 @@
 			visibility: hidden;
 			display: none;
 			width: 100%;
-			border-bottom: 1px solid $primary-color;
-			min-height: 20rem;
+
+			&.border {
+				border-bottom: 1px solid $primary-color;
+			}
 
 			@include respond(phone) {
 				display: table;
 				visibility: visible;
 			}
 
-			&-img {
+			&-first {
 				width: 20%;
 				img {
 					width: 7.5rem;
@@ -69,8 +79,8 @@
 					display: flex;
 					justify-content: center;
 					align-items: center;
-					margin-top: 1.5rem;
 					font-size: 2.5rem;
+					margin-top: -1rem;
 
 					&-number {
 						padding: 0.5rem;
@@ -83,6 +93,7 @@
 						padding: 0.6rem 0 0;
 						margin: 0;
 						border: none;
+						cursor: pointer;
 
 						&:active,
 						&:focus {
@@ -100,7 +111,7 @@
 				}
 			}
 
-			&-desc {
+			&-sec {
 				width: 80%;
 				text-align: start;
 				padding: 1.5rem 1rem;
@@ -114,7 +125,7 @@
 
 				&-cancel {
 					font-size: 3.5rem;
-					margin: -0.5rem 0 0 0.8rem;
+					margin: -0.5rem 0 0 1rem;
 					padding: 0;
 					background-color: inherit;
 					color: $danger-color;
@@ -132,9 +143,7 @@
 
 				&-total {
 					font-size: 2rem;
-					position: absolute;
-					bottom: 1.5rem;
-					right: 1rem;
+					text-align: end;
 				}
 			}
 		}

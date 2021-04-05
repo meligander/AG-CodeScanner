@@ -15,6 +15,7 @@ import {
 	deleteProduct,
 	cleanList,
 	changeQuantity,
+	formatNumber,
 } from '../../../requests/product';
 
 import Spinner from '../../modals/Spinner';
@@ -139,10 +140,6 @@ const List = () => {
 		return Math.floor(number * 100) / 100;
 	};
 
-	const formatNumber = (number) => {
-		return new Intl.NumberFormat('de-DE').format(number);
-	};
-
 	return (
 		<>
 			{!loading ? (
@@ -188,15 +185,37 @@ const List = () => {
 												</td>
 											</tr>
 											<tr className='table-small'>
-												<td className='table-small-img'>
+												<td className='table-small-first'>
 													<img
 														src={item.img}
 														alt='Producto de Alovero Garcia'
 													/>
-													<div className='table-small-img-quantity'>
+												</td>
+												<td className='table-small-sec'>
+													<div className='table-small-sec-flex'>
+														<p className='table-small-sec-name'>{item.name}</p>
+														<button
+															type='button'
+															className='btn table-small-sec-cancel'
+															onClick={(e) => {
+																e.preventDefault();
+																deleteProductFromList(item.code);
+															}}
+														>
+															<MdCancel />
+														</button>
+													</div>
+													<p className='table-small-sec-price'>
+														${formatNumber(item.price)}
+													</p>
+												</td>
+											</tr>
+											<tr className='table-small border'>
+												<td className='table-small-first'>
+													<div className='table-small-first-quantity'>
 														{item.quantity === 1 ? (
 															<button
-																className='table-small-img-quantity-icon danger'
+																className='table-small-first-quantity-icon danger'
 																onClick={(e) => {
 																	e.preventDefault();
 																	deleteProductFromList(item.code);
@@ -207,7 +226,7 @@ const List = () => {
 															</button>
 														) : (
 															<button
-																className='table-small-img-quantity-icon'
+																className='table-small-first-quantity-icon'
 																onClick={(e) => {
 																	e.preventDefault();
 																	changeItemQuantity(i, false);
@@ -218,11 +237,11 @@ const List = () => {
 															</button>
 														)}
 
-														<p className='table-small-img-quantity-number'>
+														<p className='table-small-first-quantity-number'>
 															{item.quantity}
 														</p>
 														<button
-															className='btn table-small-img-quantity-icon'
+															className='table-small-first-quantity-icon'
 															type='button'
 															onClick={(e) => {
 																e.preventDefault();
@@ -233,25 +252,8 @@ const List = () => {
 														</button>
 													</div>
 												</td>
-												<td className='table-small-desc'>
-													<div className='table-small-desc-flex'>
-														<p className='table-small-desc-name'>{item.name}</p>
-														<button
-															type='button'
-															className='btn table-small-desc-cancel'
-															onClick={(e) => {
-																e.preventDefault();
-																deleteProductFromList(item.code);
-															}}
-														>
-															<MdCancel />
-														</button>
-													</div>
-													<p className='table-small-desc-price'>
-														${formatNumber(item.price)}
-													</p>
-
-													<p className='table-small-desc-total'>
+												<td className='table-small-sec'>
+													<p className='table-small-sec-total'>
 														Subtotal: ${formatNumber(item.total)}
 													</p>
 												</td>
