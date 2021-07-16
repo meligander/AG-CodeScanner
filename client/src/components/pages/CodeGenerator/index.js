@@ -5,6 +5,7 @@ import { ImQrcode } from 'react-icons/im';
 import { loadProducts, formatNumber } from '../../../requests/product';
 
 import Spinner from '../../modals/Spinner';
+import Popup from '../../modals/Popup';
 import './style.scss';
 
 const CodeGenerator = () => {
@@ -17,6 +18,7 @@ const CodeGenerator = () => {
 		loading: false,
 		selected: '',
 		error: '',
+		toggleModal: false,
 	});
 
 	const {
@@ -25,6 +27,7 @@ const CodeGenerator = () => {
 		loading,
 		selected,
 		error,
+		toggleModal,
 	} = adminValues;
 
 	const onChange = (e) => {
@@ -42,6 +45,7 @@ const CodeGenerator = () => {
 			...prev,
 			loading: true,
 			error: '',
+			selected: '',
 		}));
 		const products = await loadProducts({ code, name });
 		if (products.success)
@@ -62,17 +66,20 @@ const CodeGenerator = () => {
 	const select = (item) => {
 		setAdminValues((prev) => ({
 			...prev,
-			selected: item.code,
+			selected: item,
 			error: '',
 		}));
 	};
 
-	const generateCode = async (code) => {
-		if (code)
-			window.open(
-				`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${code}`,
-				'_blank'
-			);
+	const generateCode = () => {
+		if (selected.code)
+			if (selected.bar)
+				setAdminValues((prev) => ({ ...prev, toggleModal: true }));
+			else
+				window.open(
+					`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${selected.code}`,
+					'_blank'
+				);
 		else {
 			setAdminValues((prev) => ({
 				...prev,
@@ -85,6 +92,20 @@ const CodeGenerator = () => {
 	return (
 		<section className='generator'>
 			{loading && <Spinner />}
+			<Popup
+				toggleModal={toggleModal}
+				setToggleModal={() =>
+					setAdminValues((prev) => ({ ...prev, toggleModal: !toggleModal }))
+				}
+				text='El producto ya tiene un código de barra, ¿Desea generar un QR de todos modos?'
+				type='confirm'
+				confirm={() =>
+					window.open(
+						`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${selected.code}`,
+						'_blank'
+					)
+				}
+			/>
 			<form
 				className='form'
 				onSubmit={(e) => {
@@ -135,6 +156,7 @@ const CodeGenerator = () => {
 						<th>Código</th>
 						<th>Nombre del Producto</th>
 						<th>Precio</th>
+						<th>EAN 13</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -142,12 +164,13 @@ const CodeGenerator = () => {
 						products.map((product, i) => (
 							<tr
 								key={i}
-								className={selected === product.code ? 'selected' : ''}
+								className={selected.code === product.code ? 'selected' : ''}
 								onDoubleClick={() => select(product)}
 							>
 								<td>{product.code}</td>
 								<td>{product.name}</td>
 								<td>${formatNumber(product.price)}</td>
+								<td>{product.bar ? 'Si' : 'No'}</td>
 							</tr>
 						))}
 				</tbody>
@@ -158,7 +181,7 @@ const CodeGenerator = () => {
 					type='button'
 					onClick={(e) => {
 						e.preventDefault();
-						generateCode(selected);
+						generateCode();
 					}}
 				>
 					Generar Código &nbsp; <ImQrcode className='btn-icon' />

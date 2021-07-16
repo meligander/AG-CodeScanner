@@ -45,13 +45,15 @@ router.post('/upload', [auth, upload.single('file')], (req, res) => {
 			obj.price = Number(row.regular_price);
 
 			if (!row.post_title) {
-				let result = data.filter((item) => item.code === obj.code);
-				result = result[0];
+				let result = data.findIndex((item) => item.code === obj.code);
+				result = data[result];
 				obj.name = result.name;
 				obj.img = result.img;
+				if (result.bar) obj.bar = result.bar;
 			} else {
 				obj.name = row.post_title.replace(/"/g, '');
 				obj.img = row.images;
+				if (row.bar !== '             ') obj.bar = row.bar;
 			}
 
 			results.push(obj);

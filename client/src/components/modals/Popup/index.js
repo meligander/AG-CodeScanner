@@ -130,6 +130,7 @@ const Popup = ({
 										break;
 									case 'confirm':
 										confirm();
+										setToggleModal();
 										break;
 									default:
 										break;

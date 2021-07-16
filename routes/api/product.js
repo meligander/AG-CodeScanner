@@ -58,7 +58,7 @@ router.get('/', auth, (req, res) => {
 //@desc     get the product from code
 //@access   Public
 router.get('/one', async (req, res) => {
-	const filter = req.query;
+	const filter = req.query.code;
 
 	try {
 		let data = fs.readFileSync(
@@ -68,11 +68,18 @@ router.get('/one', async (req, res) => {
 
 		data = JSON.parse(data);
 
-		let result = data.filter((item) =>
-			item.code.toLowerCase().includes(filter.code.toLowerCase())
-		);
+		const indexBar = !isNaN(filter)
+			? data.findIndex((item) => item.bar && item.bar === filter)
+			: -1;
 
-		result = result[0];
+		const indexCode =
+			indexBar < 0
+				? data.findIndex(
+						(item) => item.code.toLowerCase() === filter.toLowerCase()
+				  )
+				: -1;
+
+		const result = data[indexBar > -1 ? indexBar : indexCode];
 
 		if (!result) return res.status(400).json({ msg: 'Producto no encontrado' });
 
