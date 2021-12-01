@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+
+import Navbar from '../Navbar';
 
 import './style.scss';
 
-const Header = () => {
+const Header = ({ setHeaderHeight }) => {
 	const location = useLocation();
+	const ref = useRef();
 
 	const [title, setTitle] = useState('');
 
@@ -25,12 +28,15 @@ const Header = () => {
 				break;
 		}
 		setTitle(name);
+		setHeaderHeight(ref.current.offsetHeight);
 	}, [location]);
 
 	return (
-		<header className='header'>
-			<h1 className='header-primary'>Alovero García</h1>
-			<h3 className='header-secondary'>{title}</h3>
+		<header className='header' ref={ref}>
+			<Navbar />
+			<h1 className='header-primary'>
+				Alovero García <span className='header-secondary'>{title}</span>{' '}
+			</h1>
 		</header>
 	);
 };

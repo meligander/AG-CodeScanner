@@ -27,113 +27,85 @@ const List = () => {
 		products: [],
 		error: '',
 		total: 0,
-		loading: false,
+		loading: true,
 	});
 
 	const { products, error, total, loading } = adminValues;
 
-	useEffect(async () => {
-		setAdminValues((prev) => ({
-			...prev,
-			loading: true,
-		}));
-		const res = await loadListProducts();
-		if (res.success) {
-			let total = 0;
-
-			res.info.map((item) => (total = total + item.total));
-
-			total = roundNumber(total);
-
-			setAdminValues((prev) => ({
-				...prev,
-				products: res.info,
-				error: '',
-				total,
-				loading: false,
-			}));
-		} else {
-			setAdminValues((prev) => ({
-				...prev,
-				error: res.info,
-				products: [],
-				loading: false,
-			}));
-		}
-	}, [loadListProducts]);
-
-	const onChange = (e, item) => {
-		let newProducts = [...products];
-
-		newProducts[item] = {
-			...newProducts[item],
-			quantity: e.target.value,
-			total: roundNumber(e.target.value * newProducts[item].price),
+	useEffect(() => {
+		const loadProducts = async () => {
+			const res = await loadListProducts();
+			if (res.success) {
+				setAdminValues((prev) => ({
+					...prev,
+					products: res.info,
+					error: '',
+					total: roundNumber(
+						res.info.reduce((sum, item) => sum + item.total, 0)
+					),
+					loading: false,
+				}));
+			} else {
+				setAdminValues((prev) => ({
+					...prev,
+					error: res.info,
+					products: [],
+					loading: false,
+				}));
+			}
 		};
 
-		changeQuantity({ code: newProducts[item].code, quantity: e.target.value });
-
-		let total = 0;
-
-		newProducts.map((item) => (total = total + item.total));
-
-		total = roundNumber(total);
-
-		setAdminValues((prev) => ({
-			...prev,
-			products: newProducts,
-			total,
-		}));
-	};
+		loadProducts();
+	}, []);
 
 	const deleteProductFromList = (code) => {
 		let newProducts = products.filter((prod) => prod.code !== code);
 		deleteProduct(code);
 
-		let total = 0;
-
-		newProducts.map((item) => (total = total + item.total));
-
-		total = roundNumber(total);
-
 		setAdminValues((prev) => ({
 			...prev,
 			products: newProducts,
-			total,
+			total: roundNumber(
+				newProducts.reduce((sum, item) => sum + item.total, 0)
+			),
 			...(newProducts.length === 0 && {
 				error: 'No hay ningún producto en la lista',
 			}),
 		}));
 	};
 
-	const changeItemQuantity = (item, plus) => {
+	const changeItemQuantity = (item, plus, value) => {
 		let newProducts = [...products];
 
-		const quantity = plus
-			? newProducts[item].quantity + 1
-			: newProducts[item].quantity - 1;
-
-		console.log(quantity);
+		const quantity =
+			value !== null ? value : newProducts[item].quantity + (plus ? 1 : -1);
 
 		newProducts[item] = {
 			...newProducts[item],
 			quantity,
-			total: roundNumber(quantity * newProducts[item].price),
+			total:
+				quantity !== '' ? roundNumber(quantity * newProducts[item].price) : 0,
 		};
 
 		changeQuantity({ code: newProducts[item].code, quantity });
 
-		let total = 0;
-
-		newProducts.map((item) => (total = total + item.total));
-
-		total = roundNumber(total);
-
 		setAdminValues((prev) => ({
 			...prev,
 			products: newProducts,
-			total,
+			total: roundNumber(
+				newProducts.reduce((sum, item) => sum + item.total, 0)
+			),
 		}));
+	};
+
+	const onChange = (e, item) => {
+		e.persist();
+		if (e.target.value === '' || !isNaN(e.target.value))
+			if (e.target.value === '0') {
+				deleteProductFromList(products[item].code);
+			} else {
+				changeItemQuantity(item, null, e.target.value);
+			}
 	};
 
 	const roundNumber = (number) => {
@@ -165,7 +137,7 @@ const List = () => {
 												<td>
 													<input
 														className='form-group-input'
-														type='number'
+														type='text'
 														onChange={(e) => onChange(e, i)}
 														value={item.quantity}
 													/>
@@ -229,7 +201,7 @@ const List = () => {
 																className='table-small-first-quantity-icon'
 																onClick={(e) => {
 																	e.preventDefault();
-																	changeItemQuantity(i, false);
+																	changeItemQuantity(i, false, null);
 																}}
 																type='button'
 															>
@@ -245,7 +217,7 @@ const List = () => {
 															type='button'
 															onClick={(e) => {
 																e.preventDefault();
-																changeItemQuantity(i, true);
+																changeItemQuantity(i, true, null);
 															}}
 														>
 															<AiOutlinePlusSquare />

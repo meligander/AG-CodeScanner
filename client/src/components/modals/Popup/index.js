@@ -81,6 +81,7 @@ const Popup = ({
 	};
 
 	const loginOnChange = (e) => {
+		e.persist();
 		setAdminValues((prev) => ({
 			...prev,
 			login: {

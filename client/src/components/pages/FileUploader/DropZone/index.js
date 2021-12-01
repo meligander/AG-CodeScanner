@@ -48,6 +48,7 @@ const DropZone = () => {
 	};
 
 	const fileSelected = (e) => {
+		e.persist();
 		if (e.target.value) {
 			const file = e.target.files[0];
 			handleFiles(file);

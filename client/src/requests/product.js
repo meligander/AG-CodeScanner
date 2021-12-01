@@ -1,16 +1,10 @@
 import api from '../utils/api';
 
-export const loadProducts = async (filterData) => {
+export const loadProducts = async (formData) => {
 	let filter = '';
-	if (filterData) {
-		const filternames = Object.keys(filterData);
-		for (let x = 0; x < filternames.length; x++) {
-			const name = filternames[x];
-			if (filterData[name] !== '' && filterData[name] !== 0) {
-				if (filter !== '') filter = filter + '&';
-				filter = filter + filternames[x] + '=' + filterData[name];
-			}
-		}
+	for (const x in formData) {
+		if (formData[x] !== '')
+			filter = `${filter !== '' ? `${filter}&` : ''}${x}=${formData[x]}`;
 	}
 
 	try {
@@ -20,10 +14,8 @@ export const loadProducts = async (filterData) => {
 			success: true,
 		};
 	} catch (err) {
-		const msg = err.response.data.msg;
-		const type = err.response.statusText;
 		return {
-			info: msg ? msg : type,
+			info: err.response.data.msg,
 			success: false,
 		};
 	}
@@ -38,10 +30,8 @@ export const loadProduct = async (code) => {
 			success: true,
 		};
 	} catch (err) {
-		const msg = err.response.data.msg;
-		const type = err.response.statusText;
 		return {
-			info: msg ? msg : type,
+			info: err.response.data.msg,
 			success: false,
 		};
 	}
@@ -71,10 +61,8 @@ export const loadListProducts = async () => {
 			};
 		}
 	} catch (err) {
-		const msg = err.response.data.msg;
-		const type = err.response.statusText;
 		return {
-			info: msg ? msg : type,
+			info: err.response.data.msg,
 			success: false,
 		};
 	}
@@ -91,9 +79,9 @@ export const addProduct = (code) => {
 	if (products) {
 		products = JSON.parse(products);
 
-		const item = products.filter((prod) => prod.code === code);
+		const index = products.findIndex((prod) => prod.code === code);
 
-		if (item.length > 0)
+		if (index !== -1)
 			return {
 				success: false,
 				info: 'Ya está el producto en la lista',

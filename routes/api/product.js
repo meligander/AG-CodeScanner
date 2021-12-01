@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 
@@ -38,19 +37,17 @@ router.get('/', auth, (req, res) => {
 						item.code.toLowerCase().includes(filter.code.toLowerCase())
 					);
 			}
-		} else {
-			result = data;
+
+			if (result.length === 0)
+				return res
+					.status(400)
+					.json({ msg: 'No hay ningún producto con dichas descripciones' });
 		}
 
-		if (result.length === 0)
-			return res
-				.status(400)
-				.json({ msg: 'No hay ningún producto con dichas descripciones' });
-
-		res.json(result);
+		res.json(filter.name || filter.code ? result : data);
 	} catch (err) {
 		console.error(err.message);
-		return res.status(500).send('Server Error');
+		return res.status(500).json({ msg: 'Server Error' });
 	}
 });
 
@@ -58,7 +55,7 @@ router.get('/', auth, (req, res) => {
 //@desc     get the product from code
 //@access   Public
 router.get('/one', async (req, res) => {
-	const filter = req.query.code;
+	const code = req.query.code;
 
 	try {
 		let data = fs.readFileSync(
@@ -68,14 +65,14 @@ router.get('/one', async (req, res) => {
 
 		data = JSON.parse(data);
 
-		const indexBar = !isNaN(filter)
-			? data.findIndex((item) => item.bar && item.bar === filter)
+		const indexBar = !isNaN(code)
+			? data.findIndex((item) => item.bar && item.bar === code)
 			: -1;
 
 		const indexCode =
 			indexBar < 0
 				? data.findIndex(
-						(item) => item.code.toLowerCase() === filter.toLowerCase()
+						(item) => item.code.toLowerCase() === code.toLowerCase()
 				  )
 				: -1;
 
@@ -86,7 +83,7 @@ router.get('/one', async (req, res) => {
 		res.json(result);
 	} catch (err) {
 		console.error(err.message);
-		return res.status(500).send('Server Error');
+		return res.status(500).send({ msg: 'Server Error' });
 	}
 });
 
@@ -106,19 +103,19 @@ router.get('/list', async (req, res) => {
 		data = JSON.parse(data);
 
 		for (let x = 0; x < array.length; x++) {
-			let product = array[x].split(',');
+			const product = array[x].split(',');
 
 			let obj = {
 				code: product[0],
 				quantity: Number(product[1]),
 			};
 
-			product = data.filter((item) => item.code.includes(obj.code));
+			const index = data.findIndex((item) => item.code === obj.code);
 
 			obj = {
 				...obj,
-				...product[0],
-				total: Math.floor(product[0].price * obj.quantity * 100) / 100,
+				...(index !== -1 ? { ...data[index] } : { name: 'Item no encontrado' }),
+				total: Math.floor(data[index].price * obj.quantity * 100) / 100,
 			};
 
 			result.push(obj);
@@ -127,7 +124,7 @@ router.get('/list', async (req, res) => {
 		res.json(result);
 	} catch (err) {
 		console.error(err.message);
-		return res.status(500).send('Server Error');
+		return res.status(500).json({ msg: 'Server Error' });
 	}
 });
 

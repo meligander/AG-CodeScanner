@@ -19,12 +19,7 @@ import './style.scss';
 
 const CodeScanner = () => {
 	const [adminValues, setAdminValues] = useState({
-		product: {
-			code: '',
-			name: '',
-			price: 0,
-			img: '',
-		},
+		product: {},
 		loading: false,
 		result: '',
 		error: '',
@@ -61,7 +56,7 @@ const CodeScanner = () => {
 				...prev,
 				loading: false,
 				error: res.info,
-				product: { code: '', name: '', price: 0, img: '' },
+				product: {},
 			}));
 		}
 	};
@@ -70,19 +65,20 @@ const CodeScanner = () => {
 		setAdminValues((prev) => ({
 			...prev,
 			result: '',
-			product: { code: '', name: '', price: 0, img: '' },
+			product: {},
 			error: '',
 		}));
 	};
 
 	const addScannedProduct = () => {
 		const res = addProduct(product.code);
+
 		setAdminValues((prev) => ({
 			...prev,
 			listMsg: res,
 		}));
 
-		setTimeout(function () {
+		setTimeout(() => {
 			if (componentIsMounted.current)
 				setAdminValues((prev) => ({
 					...prev,
@@ -96,8 +92,8 @@ const CodeScanner = () => {
 			{result === '' ? (
 				<div>
 					<BarcodeScannerComponent
-						width={450}
-						height={450}
+						width={window.outerWidth < 450 ? window.outerWidth - 40 : 450}
+						//height={450}
 						onUpdate={(err, result) => {
 							if (result) handleScan(result);
 						}}

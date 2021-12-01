@@ -4,7 +4,6 @@
 .navbar {
 	position: fixed;
 	opacity: 0.85;
-	top: 7rem;
 	left: 5rem;
 	z-index: 20;
 	visibility: visible;
@@ -21,8 +20,9 @@
 
 	&-logo {
 		position: relative;
+		display: flex;
 		background-color: $primary-color;
-		padding: 1rem 1rem 0.8rem;
+		padding: 1rem;
 		transition: all 0.2s ease-out;
 		z-index: 1;
 

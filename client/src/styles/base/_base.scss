@@ -32,17 +32,8 @@ body {
 
 	.container {
 		position: relative;
-		min-height: 96.7vh;
-		padding: 15rem 3rem 3rem;
+		padding: 0 3rem 3rem;
 		display: flex;
-
-		@include respond(tab-land) {
-			min-height: 96.4vh;
-		}
-
-		@include respond(phone) {
-			min-height: 97vh;
-		}
 	}
 }
 

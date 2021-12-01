@@ -1,12 +1,12 @@
 @mixin respond($breakpoint) {
 	@if $breakpoint == small-phone {
-		@media only screen and (max-width: 25em) {
-			//400px - iphone
+		@media only screen and (max-width: 31.25em) {
+			//500px - iphone
 			@content;
 		}
 	}
 	@if $breakpoint == phone {
-		@media only screen and (max-width: 37.5em) {
+		@media only screen and (max-width: 40.6em) {
 			//600px
 			@content;
 		}
@@ -24,7 +24,7 @@
 		}
 	}
 	@if $breakpoint == scanner-notshow {
-		@media only screen and (min-width: 37.6em) {
+		@media only screen and (min-width: 40.7em) {
 			//600px
 			@content;
 		}

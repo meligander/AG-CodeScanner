@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { ImQrcode } from 'react-icons/im';
 
@@ -10,33 +10,42 @@ import './style.scss';
 
 const CodeGenerator = () => {
 	const [adminValues, setAdminValues] = useState({
-		filter: {
-			code: '',
-			name: '',
-		},
 		products: [],
-		loading: false,
 		selected: '',
 		error: '',
 		toggleModal: false,
 	});
 
-	const {
-		filter: { code, name },
-		products,
-		loading,
-		selected,
-		error,
-		toggleModal,
-	} = adminValues;
+	const [filter, setFilter] = useState({
+		code: '',
+		name: '',
+	});
+
+	const { products, loading, selected, error, toggleModal } = adminValues;
+
+	const { code, name } = filter;
+
+	useEffect(() => {
+		const load = async () => {
+			const products = await loadProducts({ code: '', name: '' });
+			if (products.success)
+				setAdminValues((prev) => ({
+					...prev,
+					products: products.info,
+					loading: false,
+				}));
+		};
+		//allow some time to get the token in the header
+		setTimeout(() => {
+			if (localStorage.token) load();
+		}, 50);
+	}, []);
 
 	const onChange = (e) => {
-		setAdminValues((prev) => ({
+		e.persist();
+		setFilter((prev) => ({
 			...prev,
-			filter: {
-				...prev.filter,
-				[e.target.name]: e.target.value,
-			},
+			[e.target.name]: e.target.value,
 		}));
 	};
 
@@ -44,7 +53,6 @@ const CodeGenerator = () => {
 		setAdminValues((prev) => ({
 			...prev,
 			loading: true,
-			error: '',
 			selected: '',
 		}));
 		const products = await loadProducts({ code, name });
@@ -53,6 +61,7 @@ const CodeGenerator = () => {
 				...prev,
 				products: products.info,
 				loading: false,
+				error: '',
 			}));
 		else
 			setAdminValues((prev) => ({

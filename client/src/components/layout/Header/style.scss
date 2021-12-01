@@ -1,20 +1,23 @@
-@import '../../../styles/abstracts/variables';
-@import '../../../styles/abstracts/mixins';
+@import '../../../styles/abstracts/absract';
 
 .header {
-	position: absolute;
-	z-index: 10;
-	top: 3.5rem;
-	left: 50%;
-	width: 90%;
-	transform: translateX(-50%);
+	position: relative;
+	min-height: 30vh;
 	font-family: 'Amiri', serif;
-	font-weight: lighter;
-	text-align: center;
+	font-weight: 300;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	@include respond(small-phone) {
+		min-height: 20vh;
+	}
 
 	&-primary {
 		font-size: 7rem;
 		color: $dark-color;
+		position: relative;
+
 		@include respond(small-phone) {
 			font-size: 5.5rem;
 		}
@@ -23,13 +26,12 @@
 	&-secondary {
 		font-size: 3rem;
 		color: $primary-color;
-		padding-left: 30rem;
-		margin-top: -3.5rem;
+		position: absolute;
+		top: 8.5rem;
+		right: -2.5rem;
 
 		@include respond(small-phone) {
 			font-size: 2.7rem;
-			padding-left: 17rem;
-			margin-top: -0.5rem;
 		}
 	}
 }
