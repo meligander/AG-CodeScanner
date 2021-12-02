@@ -245,7 +245,11 @@ const List = () => {
 								</p>
 							</div>
 							<div className='btn-center'>
-								<Link to='/' className='btn btn-primary'>
+								<Link
+									to='/'
+									onClick={() => window.scrollTo(0, 0)}
+									className='btn btn-primary'
+								>
 									<AiOutlineScan className='btn-icon' /> Escanear
 								</Link>
 								<button
@@ -271,7 +275,11 @@ const List = () => {
 							<div>
 								<p className='list-error-msg'>{error}</p>
 								<div className='btn-center'>
-									<Link to='/' className='btn btn-primary'>
+									<Link
+										to='/'
+										onClick={() => window.scrollTo(0, 0)}
+										className='btn btn-primary'
+									>
 										<AiOutlineScan className='btn-icon' /> Escanear
 									</Link>
 								</div>

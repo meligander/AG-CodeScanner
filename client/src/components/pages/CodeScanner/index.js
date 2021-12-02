@@ -90,7 +90,7 @@ const CodeScanner = () => {
 	return (
 		<div className='scanner'>
 			{result === '' ? (
-				<div>
+				<div className='scanner-tool'>
 					<BarcodeScannerComponent
 						width={window.outerWidth < 450 ? window.outerWidth - 40 : 450}
 						//height={450}
@@ -99,7 +99,11 @@ const CodeScanner = () => {
 						}}
 					/>
 					<div className='scanner-btn'>
-						<Link to='/list' className='btn btn-tertiary'>
+						<Link
+							to='/list'
+							onClick={() => window.scrollTo(0, 0)}
+							className='btn btn-tertiary'
+						>
 							<AiOutlineUnorderedList className='btn-icon' /> Lista
 						</Link>
 					</div>
@@ -147,7 +151,11 @@ const CodeScanner = () => {
 							</button>
 						)}
 
-						<Link to='/list' className='btn btn-tertiary'>
+						<Link
+							to='/list'
+							onClick={() => window.scrollTo(0, 0)}
+							className='btn btn-tertiary'
+						>
 							<AiOutlineUnorderedList className='btn-icon' /> Lista
 						</Link>
 

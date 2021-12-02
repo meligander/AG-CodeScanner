@@ -92,6 +92,7 @@ const Navbar = ({ history }) => {
 				{logged ? (
 					<>
 						<Link
+							onClick={() => window.scrollTo(0, 0)}
 							to='/generator'
 							className={`navbar-item ${showMenu ? 'close' : ''}`}
 						>
@@ -99,6 +100,7 @@ const Navbar = ({ history }) => {
 						</Link>
 
 						<Link
+							onClick={() => window.scrollTo(0, 0)}
 							to='/fileuploader'
 							className={`navbar-item ${showMenu ? 'close' : ''}`}
 						>
