@@ -77,7 +77,15 @@
 	&-center {
 		display: flex;
 		justify-content: space-evenly;
-		padding-bottom: 1rem;
+		width: 50%;
+		margin-top: 2rem;
+
+		@include respond(phone) {
+			width: 70%;
+		}
+		@include respond(small-phone) {
+			width: 90%;
+		}
 	}
 
 	&:hover {

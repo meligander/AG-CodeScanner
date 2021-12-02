@@ -90,15 +90,17 @@ const CodeScanner = () => {
 	return (
 		<div className='scanner'>
 			{result === '' ? (
-				<div className='scanner-tool'>
-					<BarcodeScannerComponent
-						width={window.outerWidth < 450 ? window.outerWidth - 40 : 450}
-						//height={450}
-						onUpdate={(err, result) => {
-							if (result) handleScan(result);
-						}}
-					/>
-					<div className='scanner-btn'>
+				<>
+					<div className='scanner-tool'>
+						<BarcodeScannerComponent
+							width={window.outerWidth < 450 ? window.outerWidth - 40 : 450}
+							//height={450}
+							onUpdate={(err, result) => {
+								if (result) handleScan(result);
+							}}
+						/>
+					</div>
+					<div className='btn-center'>
 						<Link
 							to='/list'
 							onClick={() => window.scrollTo(0, 0)}
@@ -107,37 +109,39 @@ const CodeScanner = () => {
 							<AiOutlineUnorderedList className='btn-icon' /> Lista
 						</Link>
 					</div>
-				</div>
+				</>
 			) : loading ? (
 				<Spinner />
 			) : (
-				<div className='scanner-description'>
-					{error === '' ? (
-						<>
-							<h3 className='scanner-description-name'>{product.name}</h3>
-							<img
-								className='scanner-description-img'
-								src={product.img}
-								alt='Producto de Alovero García'
-							/>
-							<p className='scanner-description-price'>
-								${formatNumber(product.price)}
-							</p>
-						</>
-					) : (
-						<p className='scanner-error'>{error}</p>
-					)}
+				<>
+					<div className='scanner-description'>
+						{error === '' ? (
+							<>
+								<h3 className='scanner-description-name'>{product.name}</h3>
+								<img
+									className='scanner-description-img'
+									src={product.img}
+									alt='Producto de Alovero García'
+								/>
+								<p className='scanner-description-price'>
+									${formatNumber(product.price)}
+								</p>
+							</>
+						) : (
+							<p className='scanner-error'>{error}</p>
+						)}
 
-					{listMsg !== '' && (
-						<p
-							className={`scanner-description-msg-${
-								listMsg.success ? 'success' : 'danger'
-							}`}
-						>
-							{listMsg.info}
-						</p>
-					)}
-					<div className='scanner-description-btn'>
+						{listMsg !== '' && (
+							<p
+								className={`scanner-description-msg-${
+									listMsg.success ? 'success' : 'danger'
+								}`}
+							>
+								{listMsg.info}
+							</p>
+						)}
+					</div>
+					<div className='btn-center'>
 						{error === '' && (
 							<button
 								type='button'
@@ -170,7 +174,7 @@ const CodeScanner = () => {
 							<AiOutlineScan className='btn-icon' /> Escanear
 						</button>
 					</div>
-				</div>
+				</>
 			)}
 		</div>
 	);

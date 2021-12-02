@@ -25,6 +25,10 @@
 		box-shadow: 0 2rem 4rem rgba($dark-color, 0.2);
 		transform: translateY(0) scale(1);
 		transition: all 0.2s ease-out;
+
+		.btn-center {
+			width: 100%;
+		}
 	}
 
 	&-header {
