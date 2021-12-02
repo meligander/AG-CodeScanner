@@ -118,126 +118,132 @@ const List = () => {
 				<div className='list'>
 					{error === '' ? (
 						<>
-							<table className='table'>
-								<thead>
-									<tr>
-										<th>Nombre del Producto</th>
-										<th>Precio Unitario</th>
-										<th>Cantidad</th>
-										<th>Total</th>
-										<th>&nbsp;</th>
-									</tr>
-								</thead>
-								<tbody>
-									{products.map((item, i) => (
-										<React.Fragment key={i}>
-											<tr className='table-full'>
-												<td>{item.name}</td>
-												<td>${formatNumber(item.price)}</td>
-												<td>
-													<input
-														className='form-group-input'
-														type='text'
-														onChange={(e) => onChange(e, i)}
-														value={item.quantity}
-													/>
-												</td>
-												<td>${formatNumber(item.total)}</td>
-												<td>
-													<button
-														type='button'
-														onClick={(e) => {
-															e.preventDefault();
-															deleteProductFromList(item.code);
-														}}
-														className='btn btn-danger'
-													>
-														<IoTrashOutline className='btn-icon' />
-													</button>
-												</td>
-											</tr>
-											<tr className='table-small'>
-												<td className='table-small-first'>
-													<img
-														src={item.img}
-														alt='Producto de Alovero Garcia'
-													/>
-												</td>
-												<td className='table-small-sec'>
-													<div className='table-small-sec-flex'>
-														<p className='table-small-sec-name'>{item.name}</p>
+							<div className='list-table-section'>
+								<table className='table'>
+									<thead>
+										<tr>
+											<th>Nombre del Producto</th>
+											<th>Precio Unitario</th>
+											<th>Cantidad</th>
+											<th>Total</th>
+											<th>&nbsp;</th>
+										</tr>
+									</thead>
+									<tbody>
+										{products.map((item, i) => (
+											<React.Fragment key={i}>
+												<tr className='table-full'>
+													<td>{item.name}</td>
+													<td>${formatNumber(item.price)}</td>
+													<td>
+														<input
+															className='form-group-input'
+															type='text'
+															onChange={(e) => onChange(e, i)}
+															value={item.quantity}
+														/>
+													</td>
+													<td>${formatNumber(item.total)}</td>
+													<td>
 														<button
 															type='button'
-															className='btn table-small-sec-cancel'
 															onClick={(e) => {
 																e.preventDefault();
 																deleteProductFromList(item.code);
 															}}
+															className='btn btn-danger'
 														>
-															<MdCancel />
+															<IoTrashOutline className='btn-icon' />
 														</button>
-													</div>
-													<p className='table-small-sec-price'>
-														${formatNumber(item.price)}
-													</p>
-												</td>
-											</tr>
-											<tr className='table-small border'>
-												<td className='table-small-first'>
-													<div className='table-small-first-quantity'>
-														{item.quantity === 1 ? (
+													</td>
+												</tr>
+												<tr className='table-small'>
+													<td className='table-small-first'>
+														<img
+															src={item.img}
+															alt='Producto de Alovero Garcia'
+														/>
+													</td>
+													<td className='table-small-sec'>
+														<div className='table-small-sec-flex'>
+															<p className='table-small-sec-name'>
+																{item.name}
+															</p>
 															<button
-																className='table-small-first-quantity-icon danger'
+																type='button'
+																className='btn table-small-sec-cancel'
 																onClick={(e) => {
 																	e.preventDefault();
 																	deleteProductFromList(item.code);
 																}}
-																type='button'
 															>
-																<AiOutlineCloseSquare />
+																<MdCancel />
 															</button>
-														) : (
+														</div>
+														<p className='table-small-sec-price'>
+															${formatNumber(item.price)}
+														</p>
+													</td>
+												</tr>
+												<tr className='table-small border'>
+													<td className='table-small-first'>
+														<div className='table-small-first-quantity'>
+															{item.quantity === 1 ? (
+																<button
+																	className='table-small-first-quantity-icon danger'
+																	onClick={(e) => {
+																		e.preventDefault();
+																		deleteProductFromList(item.code);
+																	}}
+																	type='button'
+																>
+																	<AiOutlineCloseSquare />
+																</button>
+															) : (
+																<button
+																	className='table-small-first-quantity-icon'
+																	onClick={(e) => {
+																		e.preventDefault();
+																		changeItemQuantity(i, false, null);
+																	}}
+																	type='button'
+																>
+																	<AiOutlineMinusSquare />
+																</button>
+															)}
+
+															<p className='table-small-first-quantity-number'>
+																{item.quantity}
+															</p>
 															<button
 																className='table-small-first-quantity-icon'
+																type='button'
 																onClick={(e) => {
 																	e.preventDefault();
-																	changeItemQuantity(i, false, null);
+																	changeItemQuantity(i, true, null);
 																}}
-																type='button'
 															>
-																<AiOutlineMinusSquare />
+																<AiOutlinePlusSquare />
 															</button>
-														)}
-
-														<p className='table-small-first-quantity-number'>
-															{item.quantity}
+														</div>
+													</td>
+													<td className='table-small-sec'>
+														<p className='table-small-sec-total'>
+															Subtotal: ${formatNumber(item.total)}
 														</p>
-														<button
-															className='table-small-first-quantity-icon'
-															type='button'
-															onClick={(e) => {
-																e.preventDefault();
-																changeItemQuantity(i, true, null);
-															}}
-														>
-															<AiOutlinePlusSquare />
-														</button>
-													</div>
-												</td>
-												<td className='table-small-sec'>
-													<p className='table-small-sec-total'>
-														Subtotal: ${formatNumber(item.total)}
-													</p>
-												</td>
-											</tr>
-										</React.Fragment>
-									))}
-								</tbody>
-							</table>
-							<p className='list-total'>
-								Total:{' '}
-								<span className='list-total-price'>${formatNumber(total)}</span>
-							</p>
+													</td>
+												</tr>
+											</React.Fragment>
+										))}
+									</tbody>
+								</table>
+								<p className='list-total'>
+									Total:{' '}
+									<span className='list-total-price'>
+										${formatNumber(total)}
+									</span>
+								</p>
+							</div>
 							<div className='btn-center'>
 								<Link to='/' className='btn btn-primary'>
 									<AiOutlineScan className='btn-icon' /> Escanear

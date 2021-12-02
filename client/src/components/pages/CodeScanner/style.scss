@@ -8,10 +8,7 @@
 	width: 100%;
 	height: auto;
 	position: relative;
-
-	@include respond(small-phone) {
-		margin-top: 3rem;
-	}
+	margin-top: 3rem;
 
 	&-description {
 		text-align: center;
