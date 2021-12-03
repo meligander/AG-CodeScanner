@@ -271,20 +271,18 @@ const List = () => {
 							</div>
 						</>
 					) : (
-						<div className='list-error'>
-							<div>
-								<p className='list-error-msg'>{error}</p>
-								<div className='btn-center'>
-									<Link
-										to='/'
-										onClick={() => window.scrollTo(0, 0)}
-										className='btn btn-primary'
-									>
-										<AiOutlineScan className='btn-icon' /> Escanear
-									</Link>
-								</div>
+						<>
+							<p className='list-error'>{error}</p>
+							<div className='btn-center'>
+								<Link
+									to='/'
+									onClick={() => window.scrollTo(0, 0)}
+									className='btn btn-primary'
+								>
+									<AiOutlineScan className='btn-icon' /> Escanear
+								</Link>
 							</div>
-						</div>
+						</>
 					)}
 				</div>
 			) : (
